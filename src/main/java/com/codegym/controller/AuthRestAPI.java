@@ -1,19 +1,24 @@
 package com.codegym.controller;
 
+import com.codegym.config.MyConstants;
 import com.codegym.message.request.LoginForm;
 import com.codegym.message.request.SignUpForm;
 import com.codegym.message.response.JwtResponse;
 import com.codegym.message.response.ResponseMessage;
+import com.codegym.model.ConfirmationToken;
 import com.codegym.model.Role;
 import com.codegym.model.RoleName;
 import com.codegym.model.User;
+import com.codegym.repository.ConfirmationTokenRepository;
 import com.codegym.repository.RoleRepository;
 import com.codegym.repository.UserRepository;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
+import com.codegym.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,8 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,6 +35,12 @@ import java.util.Set;
 public class AuthRestAPI {
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Autowired
+    private SendEmailService sendEmailService;
 
     @Autowired
     UserRepository userRepository;
@@ -94,9 +104,45 @@ public class AuthRestAPI {
         });
 
         user.setRoles(roles);
+        user.setActive(0);
         userRepository.save(user);
+
+        // create confirmtoken when save user success
+
+        ConfirmationToken confirmationToken = new ConfirmationToken();
+        confirmationToken.setUser(user);
+        Date createDate = new Date();
+        confirmationToken.setCreateDate(createDate);
+        // createToken
+
+        String token = UUID.randomUUID().toString();
+        confirmationToken.setConfirmationToken(token);
+
+        System.out.println("confirmationToken = " + confirmationToken);
+        confirmationTokenRepository.save(confirmationToken);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(user.getEmail());
+        simpleMailMessage.setSubject("Complete Registration!");
+        simpleMailMessage.setFrom(MyConstants.MY_EMAIL);
+        simpleMailMessage.setText("Click to confirm email and active your account: " +
+                "http://localhost:8080/api/auth/confirm-email?token="+confirmationToken.getConfirmationToken());
+
+        sendEmailService.sendEmail(simpleMailMessage);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
 
+    @GetMapping("/confirm-email")
+    public String confirmEmail(@RequestParam("token") String token) {
+        ConfirmationToken confirmToken = confirmationTokenRepository.findByConfirmationToken(token);
+
+        Optional<User> user = userRepository.findByEmail(confirmToken.getUser().getEmail());
+
+        if( confirmToken != null ) {
+            user.get().setActive(1);
+            userRepository.save(user.get());
+            return "Confirm email success!";
+        }
+        return " confirm email fail! ";
+    }
 }
