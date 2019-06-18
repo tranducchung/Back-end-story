@@ -9,13 +9,5 @@ public interface UserService {
     Optional<User> findByEmail(String email);
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
-
-
-    Optional<User> findByEmail(String email);
-
-    Boolean existsByEmail(String email);
-
-    Boolean existsByUsername(String username);
-
     void save(User user);
 }
