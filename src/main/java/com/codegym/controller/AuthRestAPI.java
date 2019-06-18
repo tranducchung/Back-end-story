@@ -62,12 +62,11 @@ public class AuthRestAPI {
 
     @Autowired
     private RoleService roleService;
-=======
+
     UserService userService;
 
     @Autowired
     RoleService roleService;
->>>>>>> nbthanh
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -125,7 +124,6 @@ public class AuthRestAPI {
         });
 
         user.setRoles(roles);
-<<<<<<< HEAD
         user.setActive(0);
         userService.save(user);
 
@@ -150,9 +148,7 @@ public class AuthRestAPI {
                 "http://localhost:8080/api/auth/confirm-email?token="+confirmationToken.getConfirmationToken());
 
         sendEmailService.sendEmail(simpleMailMessage);
-=======
         userService.save(user);
->>>>>>> nbthanh
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
