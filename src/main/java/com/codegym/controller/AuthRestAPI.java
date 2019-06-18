@@ -1,11 +1,18 @@
 package com.codegym.controller;
 
+<<<<<<< HEAD
 import com.codegym.config.MyConstants;
 import com.codegym.message.request.LoginForm;
 import com.codegym.message.request.SignUpForm;
 import com.codegym.message.response.JwtResponse;
 import com.codegym.message.response.ResponseMessage;
 import com.codegym.model.ConfirmationToken;
+=======
+import com.codegym.payload.request.LoginForm;
+import com.codegym.payload.request.SignUpForm;
+import com.codegym.payload.response.JwtResponse;
+import com.codegym.payload.response.ResponseMessage;
+>>>>>>> nbthanh
 import com.codegym.model.Role;
 import com.codegym.model.RoleName;
 import com.codegym.model.User;
@@ -14,9 +21,13 @@ import com.codegym.repository.RoleRepository;
 import com.codegym.repository.UserRepository;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
+<<<<<<< HEAD
 import com.codegym.service.ConfirmationTokenService;
 import com.codegym.service.RoleService;
 import com.codegym.service.SendEmailService;
+=======
+import com.codegym.service.RoleService;
+>>>>>>> nbthanh
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +51,7 @@ public class AuthRestAPI {
     AuthenticationManager authenticationManager;
 
     @Autowired
+<<<<<<< HEAD
     private ConfirmationTokenService confirmationTokenService;
 
     @Autowired
@@ -50,6 +62,12 @@ public class AuthRestAPI {
 
     @Autowired
     private RoleService roleService;
+=======
+    UserService userService;
+
+    @Autowired
+    RoleService roleService;
+>>>>>>> nbthanh
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -107,6 +125,7 @@ public class AuthRestAPI {
         });
 
         user.setRoles(roles);
+<<<<<<< HEAD
         user.setActive(0);
         userService.save(user);
 
@@ -131,6 +150,9 @@ public class AuthRestAPI {
                 "http://localhost:8080/api/auth/confirm-email?token="+confirmationToken.getConfirmationToken());
 
         sendEmailService.sendEmail(simpleMailMessage);
+=======
+        userService.save(user);
+>>>>>>> nbthanh
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
