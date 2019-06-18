@@ -1,4 +1,4 @@
-package com.codegym.message.response;
+package com.codegym.payload.response;
 
 public class ResponseMessage {
     private String message;
