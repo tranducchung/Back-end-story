@@ -22,8 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -65,9 +69,7 @@ public class RestBlogController {
     // create blog
 
     @PostMapping("/api/blogs")
-    public ResponseEntity<Void> createBlog(@RequestBody Blog blog, UriComponentsBuilder ucBuilder,
-                                           HttpServletRequest request,
-                                           Authentication authentication) {
+    public ResponseEntity<Void> createBlog(@RequestBody Blog blog, HttpServletRequest request) {
 
         String jwt = request.getHeader("Authorization");
         // get user from token
@@ -76,9 +78,15 @@ public class RestBlogController {
 
         User user = userService.findUserByID(userID);
         blog.setUser(user);
+        // create date
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+        ZoneId.of("Asia/Ho_Chi_Minh");
+        System.out.println(zonedDateTime);
+        blog.setCreateDate(zonedDateTime);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
+        //httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
         return new ResponseEntity<Void>(httpHeaders, HttpStatus.CREATED);
     }
 
@@ -110,4 +118,31 @@ public class RestBlogController {
         blogService.save(blogInDB);
         return new ResponseEntity<Blog>(blogInDB, HttpStatus.OK);
     }
+
+    //get all blog in database by id and DESC
+
+    @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
+    public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
+        List<Blog> listBlog = blogService.findAllBlogByIdOderById();
+        if( listBlog.isEmpty()) {
+            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+    }
+
+
+    // get alll blog in database by id blog sorted DESC when user_id = ?
+
+    @RequestMapping(value = {"/api/user-blogs-getall"}, method = RequestMethod.GET)
+    public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
+        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = ((UserPrinciple)authen).getId();
+        List<Blog> listBlog = blogService.findAllByUserId(userId);
+        if( listBlog.isEmpty()) {
+            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+    }
+
+
 }
