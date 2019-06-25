@@ -6,6 +6,9 @@ import com.codegym.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -32,5 +35,17 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void remote(Blog blog) {
         blogRepository.delete(blog);
+    }
+
+
+    @Override
+    public List<Blog> findAllBlogByIdOderById() {
+        return blogRepository.findAllByIdOrderById();
+    }
+
+
+    @Override
+    public List<Blog> findAllByUserId(Long id) {
+        return blogRepository.findAllByUserIdAndOrderByIdDesc(id);
     }
 }

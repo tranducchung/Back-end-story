@@ -22,6 +22,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class RestUploadFileController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class RestUploadFileController {
     private MyUpLoadService myUpLoadService;
 
     @PostMapping("/api/upload")
-    public ResponseEntity<Void> upLoadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> upLoadFile(@RequestBody @RequestParam("file") MultipartFile file) {
         if (file == null) {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
