@@ -135,6 +135,10 @@ public class RestBlogController {
 
     @RequestMapping(value = {"/api/user-blogs-getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
+        Object authen1 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userName = ((UserDetails)authen1).getUsername();
+        System.out.println("email = " + userName);
+
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = ((UserPrinciple)authen).getId();
         List<Blog> listBlog = blogService.findAllByUserId(userId);
