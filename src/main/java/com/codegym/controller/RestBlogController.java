@@ -66,6 +66,24 @@ public class RestBlogController {
         return new ResponseEntity<Blog>(blog, HttpStatus.OK);
     }
 
+    //get 1 custom blog of custom user
+
+    @RequestMapping(value = {"/api/user/{userId}/blogs/{blogId}"}, method = RequestMethod.GET)
+    public ResponseEntity<Blog> getCustomBlog(@PathVariable("userId") Long id, @PathVariable("blogId") Long blogId) {
+        User user = userService.findUserByID(id);
+        Blog blog = blogService.findByIdAndUser(blogId, user);
+        if( user == null) {
+            return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
+        }
+        if( blog == null) {
+            return  new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Blog>(blog, HttpStatus.OK);
+    }
+
+
+
+
     // create blog
 
     @PostMapping("/api/blogs")
@@ -135,10 +153,6 @@ public class RestBlogController {
 
     @RequestMapping(value = {"/api/user-blogs-getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
-        Object authen1 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userName = ((UserDetails)authen1).getUsername();
-        System.out.println("email = " + userName);
-
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = ((UserPrinciple)authen).getId();
         List<Blog> listBlog = blogService.findAllByUserId(userId);
