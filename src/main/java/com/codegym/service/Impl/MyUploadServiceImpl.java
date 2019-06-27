@@ -5,6 +5,7 @@ import com.codegym.repository.MyUploadRepository;
 import com.codegym.service.MyUpLoadService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,10 @@ import java.util.logging.Logger;
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
 
+    @Value("${file.upload-dir}")
+    private String path;
     //Logger log = (Logger) LoggerFactory.getLogger(this.getClass().getName());
-    private final Path rootLocation = Paths.get("upload-dir");
+    private final Path rootLocation = Paths.get(path);
 
     @Autowired
     private MyUploadRepository myUploadRepository;

@@ -1,6 +1,7 @@
 package com.codegym.service.Impl;
 
 import com.codegym.model.Blog;
+import com.codegym.model.User;
 import com.codegym.repository.BlogRepository;
 import com.codegym.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> findAllByUserId(Long id) {
         return blogRepository.findAllByUserIdAndOrderByIdDesc(id);
+    }
+
+    @Override
+    public Blog findByIdAndUser(Long id, User user) {
+        return blogRepository.findByIdAndUser(id, user);
     }
 }

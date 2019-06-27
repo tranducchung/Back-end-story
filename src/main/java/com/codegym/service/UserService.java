@@ -2,6 +2,7 @@ package com.codegym.service;
 
 import com.codegym.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -11,4 +12,6 @@ public interface UserService {
     Boolean existsByUsername(String username);
     void save(User user);
     User findUserByID(Long id);
+
+    List<User> findAllUser();
 }

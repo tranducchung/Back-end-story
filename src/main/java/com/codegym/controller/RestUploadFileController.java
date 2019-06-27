@@ -31,7 +31,7 @@ public class RestUploadFileController {
     @Autowired
     private MyUpLoadService myUpLoadService;
 
-    @PostMapping("/api/upload")
+    @PostMapping(value = "/api/upload")
     public ResponseEntity<Void> upLoadFile(@RequestBody @RequestParam("file") MultipartFile file) {
         if (file == null) {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -56,18 +56,18 @@ public class RestUploadFileController {
 
     //get file by file name
 
-    @RequestMapping(value = {"/api/files/{filename:.+}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-        Resource file = myUpLoadService.loadFile(filename);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
-    }
+//    @RequestMapping(value = {"/api/files/{filename:.+}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+//        Resource file = myUpLoadService.loadFile(filename);
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION,            "attachment; filename=\"" + file.getFilename() + "\"")
+//                .body(file);
+//    }
 
 
     // get all file upload by user id
 
-    @RequestMapping(value = {"/api/user-getall"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/api/upload/all"}, method = RequestMethod.GET)
     public ResponseEntity<List<MyUpload>> getAllUploadFromUserId() {
         // get User id From token
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

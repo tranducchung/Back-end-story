@@ -37,14 +37,14 @@ public class RestBlogController {
 
     // get all blog
 
-    @GetMapping("/api/blogs")
-    public ResponseEntity<List<Blog>> getAllBlog() {
-        List<Blog> listBlog = blogService.findAll();
-        if (listBlog.isEmpty()) {
-            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
-    }
+//    @GetMapping("/api/blogs")
+//    public ResponseEntity<List<Blog>> getAllBlog() {
+//        List<Blog> listBlog = blogService.findAll();
+//        if (listBlog.isEmpty()) {
+//            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+//    }
 
     // get 1 blog
 
@@ -57,9 +57,27 @@ public class RestBlogController {
         return new ResponseEntity<Blog>(blog, HttpStatus.OK);
     }
 
+    //get 1 custom blog of custom user
+
+    @RequestMapping(value = {"/api/users/{userId}/blogs/{blogId}"}, method = RequestMethod.GET)
+    public ResponseEntity<Blog> getCustomBlog(@PathVariable("userId") Long id, @PathVariable("blogId") Long blogId) {
+        User user = userService.findUserByID(id);
+        Blog blog = blogService.findByIdAndUser(blogId, user);
+        if( user == null) {
+            return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
+        }
+        if( blog == null) {
+            return  new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Blog>(blog, HttpStatus.OK);
+    }
+
+
+
+
     // create blog
 
-    @PostMapping("/api/blogs")
+    @PostMapping("/api/blogs/create")
     public ResponseEntity<Void> createBlog(@RequestBody Blog blog, HttpServletRequest request) {
 
         String jwt = request.getHeader("Authorization");
@@ -111,7 +129,8 @@ public class RestBlogController {
     }
 
     //get all blog in database by id and DESC
-//
+
+
 //    @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
 //    public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
 //        List<Blog> listBlog = blogService.findAllBlogByIdOderById();
@@ -126,10 +145,6 @@ public class RestBlogController {
 
     @RequestMapping(value = {"/api/blogs/getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
-        Object authen1 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userName = ((UserDetails) authen1).getUsername();
-        System.out.println("email = " + userName);
-
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = ((UserPrinciple) authen).getId();
         List<Blog> listBlog = blogService.findAllByUserId(userId);
