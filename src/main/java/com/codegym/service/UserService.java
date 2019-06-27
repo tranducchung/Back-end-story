@@ -14,4 +14,5 @@ public interface UserService {
     User findUserByID(Long id);
 
     List<User> findAllUser();
+
 }

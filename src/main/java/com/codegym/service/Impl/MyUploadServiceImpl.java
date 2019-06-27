@@ -27,7 +27,7 @@ public class MyUploadServiceImpl implements MyUpLoadService {
 
     @Value("${file.upload-dir}")
     private String path;
-    //Logger log = (Logger) LoggerFactory.getLogger(this.getClass().getName());
+
     private final Path rootLocation = Paths.get(path);
 
     @Autowired
