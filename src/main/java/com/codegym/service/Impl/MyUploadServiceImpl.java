@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class MyUploadServiceImpl implements MyUpLoadService {
 
     //Logger log = (Logger) LoggerFactory.getLogger(this.getClass().getName());
-    private final Path rootLocation = Paths.get("upload-dir");
+    private final Path rootLocation = Paths.get("/home/chung/Documents/DUAN/Story-Project/src/main/resources/upload-dir/");
 
     @Autowired
     private MyUploadRepository myUploadRepository;
