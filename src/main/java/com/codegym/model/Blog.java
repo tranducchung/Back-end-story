@@ -14,7 +14,7 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
-    private ZonedDateTime createDate;
+    private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -29,18 +29,18 @@ public class Blog {
         this.user = user;
     }
 
-    public Blog(String content, String title, ZonedDateTime createDate, User user) {
+    public Blog(String content, String title, Date createDate, User user) {
         this.content = content;
         this.title = title;
         this.createDate = createDate;
         this.user = user;
     }
 
-    public ZonedDateTime getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(ZonedDateTime createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

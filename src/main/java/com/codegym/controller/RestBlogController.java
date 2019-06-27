@@ -2,7 +2,6 @@ package com.codegym.controller;
 
 import com.codegym.model.Blog;
 import com.codegym.model.User;
-import com.codegym.payload.request.LoginForm;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogService;
@@ -10,23 +9,15 @@ import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import java.security.Principal;
-import java.sql.Timestamp;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 @RestController
@@ -74,13 +65,13 @@ public class RestBlogController {
         String jwt = request.getHeader("Authorization");
         // get user from token
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userID = ((UserPrinciple)principal).getId();
+        Long userID = ((UserPrinciple) principal).getId();
 
         User user = userService.findUserByID(userID);
         blog.setUser(user);
         // create date
         LocalDateTime localDateTime = LocalDateTime.now();
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+        Date zonedDateTime = new Date();
         ZoneId.of("Asia/Ho_Chi_Minh");
         System.out.println(zonedDateTime);
         blog.setCreateDate(zonedDateTime);
@@ -96,7 +87,7 @@ public class RestBlogController {
     @RequestMapping(value = {"/api/blogs/{id}"}, method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteBlog(@PathVariable("id") Long id) {
         Blog blog = blogService.findById(id);
-        if ( blog != null ) {
+        if (blog != null) {
             blogService.remote(blog);
             return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
         }
@@ -110,7 +101,7 @@ public class RestBlogController {
     public ResponseEntity<Blog> editBlog(@RequestBody Blog blog, @PathVariable("id") Long id) {
 
         Blog blogInDB = blogService.findById(id);
-        if( blogInDB == null) {
+        if (blogInDB == null) {
             return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
         }
         blogInDB.setTitle(blog.getTitle());
@@ -120,29 +111,29 @@ public class RestBlogController {
     }
 
     //get all blog in database by id and DESC
-
-    @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
-    public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
-        List<Blog> listBlog = blogService.findAllBlogByIdOderById();
-        if( listBlog.isEmpty()) {
-            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
-    }
+//
+//    @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
+//    public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
+//        List<Blog> listBlog = blogService.findAllBlogByIdOderById();
+//        if( listBlog.isEmpty()) {
+//            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+//    }
 
 
     // get alll blog in database by id blog sorted DESC when user_id = ?
 
-    @RequestMapping(value = {"/api/user-blogs-getall"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/api/blogs/getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
         Object authen1 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userName = ((UserDetails)authen1).getUsername();
+        String userName = ((UserDetails) authen1).getUsername();
         System.out.println("email = " + userName);
 
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = ((UserPrinciple)authen).getId();
+        Long userId = ((UserPrinciple) authen).getId();
         List<Blog> listBlog = blogService.findAllByUserId(userId);
-        if( listBlog.isEmpty()) {
+        if (listBlog.isEmpty()) {
             return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
