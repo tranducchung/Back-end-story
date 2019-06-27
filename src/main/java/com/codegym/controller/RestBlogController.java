@@ -68,7 +68,7 @@ public class RestBlogController {
 
     //get 1 custom blog of custom user
 
-    @RequestMapping(value = {"/api/user/{userId}/blogs/{blogId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/api/users/{userId}/blogs/{blogId}"}, method = RequestMethod.GET)
     public ResponseEntity<Blog> getCustomBlog(@PathVariable("userId") Long id, @PathVariable("blogId") Long blogId) {
         User user = userService.findUserByID(id);
         Blog blog = blogService.findByIdAndUser(blogId, user);
@@ -86,7 +86,7 @@ public class RestBlogController {
 
     // create blog
 
-    @PostMapping("/api/blogs")
+    @PostMapping("/api/blogs/create")
     public ResponseEntity<Void> createBlog(@RequestBody Blog blog, HttpServletRequest request) {
 
         String jwt = request.getHeader("Authorization");
@@ -151,7 +151,7 @@ public class RestBlogController {
 
     // get alll blog in database by id blog sorted DESC when user_id = ?
 
-    @RequestMapping(value = {"/api/user/getall"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/api/blogs/getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = ((UserPrinciple)authen).getId();
