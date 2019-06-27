@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -60,19 +62,19 @@ public class RestUploadFileController {
 
 
     // get all file upload by user id
-//
-//    @RequestMapping(value = {"/api/upload/getall"}, method = RequestMethod.GET)
-//    public ResponseEntity<List<MyUpload>> getAllUploadFromUserId() {
-//        // get User id From token
-//        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Long userId = ((UserPrinciple) authen).getId();
-//
-//        List<MyUpload> listMyUpload = myUpLoadService.findAllUploadFromUserId(userId);
-//        if (listMyUpload.isEmpty()) {
-//            return new ResponseEntity<List<MyUpload>>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
-//    }
+
+    @RequestMapping(value = {"/api/upload/getall"}, method = RequestMethod.GET)
+    public ResponseEntity<List<MyUpload>> getAllUploadFromUserId() {
+        // get User id From token
+        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = ((UserPrinciple) authen).getId();
+
+        List<MyUpload> listMyUpload = myUpLoadService.findAllUploadFromUserId(userId);
+        if (listMyUpload.isEmpty()) {
+            return new ResponseEntity<List<MyUpload>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
+    }
 
 }
 
