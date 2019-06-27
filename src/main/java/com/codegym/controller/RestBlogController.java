@@ -139,19 +139,19 @@ public class RestBlogController {
 
     //get all blog in database by id and DESC
 
-    @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
-    public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
-        List<Blog> listBlog = blogService.findAllBlogByIdOderById();
-        if( listBlog.isEmpty()) {
-            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
-    }
+//    @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
+//    public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
+//        List<Blog> listBlog = blogService.findAllBlogByIdOderById();
+//        if( listBlog.isEmpty()) {
+//            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+//    }
 
 
     // get alll blog in database by id blog sorted DESC when user_id = ?
 
-    @RequestMapping(value = {"/api/user-blogs-getall"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/api/user/getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogByUserIdAndSortBlogIdDESC() {
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = ((UserPrinciple)authen).getId();
