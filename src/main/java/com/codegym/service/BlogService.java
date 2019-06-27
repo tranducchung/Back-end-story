@@ -1,6 +1,7 @@
 package com.codegym.service;
 
 import com.codegym.model.Blog;
+import com.codegym.model.User;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -17,4 +18,6 @@ public interface BlogService {
 
 
     List<Blog> findAllByUserId(Long id);
+
+    Blog findByIdAndUser(Long id, User user);
 }
