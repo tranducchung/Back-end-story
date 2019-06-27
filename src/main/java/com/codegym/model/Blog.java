@@ -1,6 +1,9 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Entity
@@ -11,6 +14,7 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
+    private ZonedDateTime createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -23,6 +27,21 @@ public class Blog {
         this.content = content;
         this.title = title;
         this.user = user;
+    }
+
+    public Blog(String content, String title, ZonedDateTime createDate, User user) {
+        this.content = content;
+        this.title = title;
+        this.createDate = createDate;
+        this.user = user;
+    }
+
+    public ZonedDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate;
     }
 
     public Long getId() {
