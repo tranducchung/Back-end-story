@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class MyUploadServiceImpl implements MyUpLoadService {
 
     //Logger log = (Logger) LoggerFactory.getLogger(this.getClass().getName());
-    private final Path rootLocation = Paths.get("/home/laptop88/Desktop/Front-end-Story/src/assets/");
+    private final Path rootLocation = Paths.get("/home/laptop88/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
     @Autowired
     private MyUploadRepository myUploadRepository;
