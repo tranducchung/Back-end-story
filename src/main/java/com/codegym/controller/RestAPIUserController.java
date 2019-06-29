@@ -19,7 +19,7 @@ public class RestAPIUserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api/listUser")
+    @GetMapping("/api/users")
     public ResponseEntity<List<User>> getAllUser() {
         List<User> listUser = userService.findAllUser();
         if( listUser.isEmpty()) {
@@ -28,7 +28,7 @@ public class RestAPIUserController {
         return new ResponseEntity<List<User>>(listUser, HttpStatus.OK);
     }
 
-    @GetMapping("/api/user/{id}")
+    @GetMapping("/api/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
 
         User user = userService.findUserByID(id);
