@@ -20,4 +20,6 @@ public interface BlogService {
     List<Blog> findAllByUserId(Long id);
 
     Blog findByIdAndUser(Long id, User user);
+
+    void delete(Long id);
 }

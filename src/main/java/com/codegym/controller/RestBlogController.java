@@ -7,6 +7,8 @@ import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogService;
 import com.codegym.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.security.Principal;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -32,6 +36,9 @@ import java.util.*;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class RestBlogController {
+
+    private final Logger LOG = LoggerFactory.getLogger(RestBlogController.class);
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -50,6 +57,7 @@ public class RestBlogController {
     public ResponseEntity<List<Blog>> getAllBlog() {
         List<Blog> listBlog = blogService.findAll();
         if (listBlog.isEmpty()) {
+            LOG.info("no candidates found");
             return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
@@ -96,12 +104,12 @@ public class RestBlogController {
 
         User user = userService.findUserByID(userID);
         blog.setUser(user);
-        // create date
-        LocalDateTime localDateTime = LocalDateTime.now();
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        ZoneId.of("Asia/Ho_Chi_Minh");
-        System.out.println(zonedDateTime);
-        blog.setCreateDate(zonedDateTime);
+
+        Date date = Calendar.getInstance().getTime();
+        String pattern = "MM/dd/yyyy HH:mm:ss";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        String strDate = dateFormat.format(date);
+        blog.setCreateDate(strDate);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
         //httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
@@ -116,9 +124,9 @@ public class RestBlogController {
         Blog blog = blogService.findById(id);
         if ( blog != null ) {
             blogService.remote(blog);
-            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<Void>(HttpStatus.OK);
         }
-        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 

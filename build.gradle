@@ -41,4 +41,5 @@ dependencies {
 	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 	// websocket lib
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
 }

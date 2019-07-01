@@ -57,6 +57,8 @@ public class RestAPIUserController {
 
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userShare = ((UserPrinciple) authen).getUsername();
+        Long idUserShare = ((UserPrinciple) authen).getId();
+        System.out.println("Id_userShare = "+ idUserShare);
         Blog blog = blogService.findById(blogId);
 
         System.out.println(userId);
@@ -71,7 +73,7 @@ public class RestAPIUserController {
             notification.setUserReceive(userReceive);
 
             // set content notification
-            String contentNotification = "/api/users/" + userId + "/blogs/" + blogId;
+            String contentNotification = "/api/users/" + idUserShare + "/blogs/" + blogId;
             notification.setContent(contentNotification);
 
             notificationService.save(notification);
