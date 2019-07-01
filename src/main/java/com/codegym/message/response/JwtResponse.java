@@ -1,4 +1,4 @@
-package com.codegym.payload.response;
+package com.codegym.message.response;
 
 import org.springframework.security.core.GrantedAuthority;
 
