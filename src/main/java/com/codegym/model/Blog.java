@@ -14,7 +14,7 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
-    private Date createDate;
+    private String createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -29,18 +29,26 @@ public class Blog {
         this.user = user;
     }
 
-    public Blog(String content, String title, Date createDate, User user) {
+    public Blog(String content, String title, String createDate, User user) {
         this.content = content;
         this.title = title;
         this.createDate = createDate;
         this.user = user;
     }
 
-    public Date getCreateDate() {
+    public Blog(Long id, String content, String title, String createDate, User user) {
+        this.id = id;
+        this.content = content;
+        this.title = title;
+        this.createDate = createDate;
+        this.user = user;
+    }
+
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
