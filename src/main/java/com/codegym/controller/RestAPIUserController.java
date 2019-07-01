@@ -1,10 +1,16 @@
 package com.codegym.controller;
 
+import com.codegym.model.Blog;
+import com.codegym.model.Notification;
 import com.codegym.model.User;
+import com.codegym.security.service.UserPrinciple;
+import com.codegym.service.BlogService;
+import com.codegym.service.NotificationService;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +21,12 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class RestAPIUserController {
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private BlogService blogService;
 
     @Autowired
     private UserService userService;
@@ -36,5 +48,36 @@ public class RestAPIUserController {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/api/users/shareToUser/{userId}/blogs/{blogId}")
+    public ResponseEntity<Void> shareBlogToUser(@PathVariable("userId") Long userId, @PathVariable("blogId") Long blogId) {
+
+        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userShare = ((UserPrinciple) authen).getUsername();
+        Long idUserShare = ((UserPrinciple) authen).getId();
+        System.out.println("Id_userShare = "+ idUserShare);
+        Blog blog = blogService.findById(blogId);
+
+        System.out.println(userId);
+        System.out.println(blogId);
+
+        User userReceive = userService.findUserByID(userId);
+        if (userReceive != null && blog != null) {
+            Notification notification = new Notification();
+            notification.setUserShare(userShare);
+            // get user receive by user id
+
+            notification.setUserReceive(userReceive);
+
+            // set content notification
+            String contentNotification = "/api/users/" + idUserShare + "/blogs/" + blogId;
+            notification.setContent(contentNotification);
+
+            notificationService.save(notification);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 }

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -37,14 +39,14 @@ public class RestBlogController {
 
     // get all blog
 
-//    @GetMapping("/api/blogs")
-//    public ResponseEntity<List<Blog>> getAllBlog() {
-//        List<Blog> listBlog = blogService.findAll();
-//        if (listBlog.isEmpty()) {
-//            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
-//    }
+    @GetMapping("/api/blogs")
+    public ResponseEntity<List<Blog>> getAllBlog() {
+        List<Blog> listBlog = blogService.findAll();
+        if (listBlog.isEmpty()) {
+            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+    }
 
     // get 1 blog
 
@@ -84,14 +86,15 @@ public class RestBlogController {
         // get user from token
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userID = ((UserPrinciple) principal).getId();
-
         User user = userService.findUserByID(userID);
         blog.setUser(user);
         // create date
-//        LocalDateTime localDateTime = LocalDateTime.now();
-        Date zonedDateTime = new Date();
-        ZoneId.of("Asia/Ho_Chi_Minh");
-        blog.setCreateDate(zonedDateTime);
+//
+        Date date = Calendar.getInstance().getTime();
+        String pattern = "MM/dd/yyyy HH:mm:ss";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        String strDate = dateFormat.format(date);
+        blog.setCreateDate(strDate);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
@@ -106,7 +109,7 @@ public class RestBlogController {
         Blog blog = blogService.findById(id);
         if (blog != null) {
             blogService.remote(blog);
-            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<Void>(HttpStatus.OK);
         }
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }

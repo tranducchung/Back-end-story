@@ -20,10 +20,10 @@ import java.util.List;
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
 
-    @Value("${path.file-upload}")
-    private String path;
+//    @Value("${path.file-upload}")
+//    private String path;
 
-    private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
+    private final Path rootLocation = Paths.get("/home/laptop88/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
     @Autowired
     private MyUploadRepository myUploadRepository;
