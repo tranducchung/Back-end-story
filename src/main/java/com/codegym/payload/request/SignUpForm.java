@@ -1,4 +1,4 @@
-package com.codegym.message.request;
+package com.codegym.payload.request;
 
 
 import javax.validation.constraints.Email;
