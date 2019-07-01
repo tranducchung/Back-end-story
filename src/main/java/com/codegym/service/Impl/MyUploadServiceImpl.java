@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
 
-    @Value("${file.upload-dir}")
+    @Value("${path.file-upload}")
     private String path;
 
     private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");

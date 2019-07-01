@@ -88,14 +88,13 @@ public class RestBlogController {
         User user = userService.findUserByID(userID);
         blog.setUser(user);
         // create date
-        LocalDateTime localDateTime = LocalDateTime.now();
+//        LocalDateTime localDateTime = LocalDateTime.now();
         Date zonedDateTime = new Date();
         ZoneId.of("Asia/Ho_Chi_Minh");
-        System.out.println(zonedDateTime);
         blog.setCreateDate(zonedDateTime);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
-        //httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
+//        httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
         return new ResponseEntity<Void>(httpHeaders, HttpStatus.CREATED);
     }
 
