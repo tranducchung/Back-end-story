@@ -4,14 +4,10 @@ import com.codegym.model.Blog;
 import com.codegym.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, Long> {
@@ -23,5 +19,5 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     Blog findByIdAndUser(Long id, User user);
 
-    Optional<Blog> findAllByTitleContaining(String title);
+    List<Blog> findAllByTitleContaining(String title);
 }

@@ -29,20 +29,20 @@ public class Blog {
         this.user = user;
     }
 
-    public Blog(String content, String title, String createDate, User user) {
-        this.content = content;
-        this.title = title;
-        this.createDate = createDate;
-        this.user = user;
-    }
-
-    public Blog(Long id, String content, String title, String createDate, User user) {
-        this.id = id;
-        this.content = content;
-        this.title = title;
-        this.createDate = createDate;
-        this.user = user;
-    }
+//    public Blog(String content, String title, String createDate, User user) {
+//        this.content = content;
+//        this.title = title;
+//        this.createDate = createDate;
+//        this.user = user;
+//    }
+//
+//    public Blog(Long id, String content, String title, String createDate, User user) {
+//        this.id = id;
+//        this.content = content;
+//        this.title = title;
+//        this.createDate = createDate;
+//        this.user = user;
+//    }
 
     public String getCreateDate() {
         return createDate;
