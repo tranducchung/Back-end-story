@@ -17,4 +17,6 @@ public interface BlogService {
     Blog findByIdAndUser(Long id, User user);
 
     List<Blog> findAllByTitleContaining(String title);
+
+    List<Blog> findAllByTitleContainingAndUser(String title, User user);
 }

@@ -14,10 +14,13 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     @Query("SELECT b FROM Blog b ORDER BY b.id DESC ")
     List<Blog> findAllByIdOrderById();
+
     @Query("SELECT b FROM Blog b JOIN b.user u WHERE u.id=?1 order by b.id desc")
     List<Blog> findAllByUserIdAndOrderByIdDesc(Long id);
 
     Blog findByIdAndUser(Long id, User user);
 
     List<Blog> findAllByTitleContaining(String title);
+
+    List<Blog> findAllByTitleContainingAndUser(String title, User user);
 }

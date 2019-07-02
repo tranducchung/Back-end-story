@@ -164,4 +164,22 @@ public class RestBlogController {
         listBlog = blogService.findAll();
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
     }
+
+    @GetMapping("/api/blogs/user/searchall")
+    public ResponseEntity<List<Blog>> findAllBlogByTitleOfUser(@RequestParam("title") Optional<String> title) {
+        // get user from token
+        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long user_id = ((UserPrinciple) authen).getId();
+        User user = userService.findUserByID(user_id);
+        List<Blog> listBlog;
+        if (title.isPresent() && user != null) {
+            listBlog = blogService.findAllByTitleContainingAndUser(title.get(), user);
+            if ( listBlog.isEmpty() ) {
+                return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+        }
+        listBlog = blogService.findAllByUserId(user_id);
+        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+    }
 }
