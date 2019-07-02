@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface BlogService {
     List<Blog> findAll();
@@ -20,4 +21,6 @@ public interface BlogService {
     List<Blog> findAllByUserId(Long id);
 
     Blog findByIdAndUser(Long id, User user);
+
+    Optional<Blog> findAllByTitleContaining(String title);
 }

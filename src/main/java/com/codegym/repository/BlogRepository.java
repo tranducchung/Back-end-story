@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, Long> {
@@ -21,4 +22,6 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     List<Blog> findAllByUserIdAndOrderByIdDesc(Long id);
 
     Blog findByIdAndUser(Long id, User user);
+
+    Optional<Blog> findAllByTitleContaining(String title);
 }

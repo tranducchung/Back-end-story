@@ -31,11 +31,6 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findAllNotificationByUserIdAndOderById(Long id) {
-        return notificationRepository.findAllNotificationByUserIdAndOderById(id);
-    }
-
-    @Override
     public void deleteAllNotificationByUser(User user) {
         notificationRepository.deleteAllByUserReceive(user);
     }
@@ -43,5 +38,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void deleteNotificationById(Long id) {
         notificationRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Notification> findAllByUserReceiveOrderById(User user) {
+        return notificationRepository.findAllByUserReceiveOrderByIdDesc(user);
     }
 }
