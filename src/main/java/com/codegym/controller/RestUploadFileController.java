@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -38,6 +40,7 @@ public class RestUploadFileController {
             Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Long userId = ((UserPrinciple) authen).getId();
             User user = userService.findUserByID(userId);
+
             myUpload.setSrcImg(file.getOriginalFilename());
             myUpload.setUser(user);
             myUpLoadService.save(myUpload);
@@ -49,6 +52,13 @@ public class RestUploadFileController {
         }
     }
 
+    @PostMapping("/api/uploadmulti")
+    public List < ResponseEntity<Void> > uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        return Arrays.asList(files)
+                .stream()
+                .map(file -> upLoadFile(file))
+                .collect(Collectors.toList());
+    }
 
     //get file by file name
 
