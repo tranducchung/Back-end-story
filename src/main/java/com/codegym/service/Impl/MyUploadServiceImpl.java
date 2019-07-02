@@ -25,7 +25,7 @@ public class MyUploadServiceImpl implements MyUpLoadService {
     @Value("${path.file-upload}")
     private URI path;
 
-    private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
+    private final Path rootLocation = Paths.get("/home/laptop88/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
     @Autowired
     private MyUploadRepository myUploadRepository;
@@ -36,9 +36,9 @@ public class MyUploadServiceImpl implements MyUpLoadService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, String fileName) {
         try {
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(fileName));
         } catch (Exception e) {
             throw new RuntimeException("FAIL!");
         }

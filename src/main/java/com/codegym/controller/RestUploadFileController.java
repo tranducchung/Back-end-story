@@ -40,11 +40,12 @@ public class RestUploadFileController {
             Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Long userId = ((UserPrinciple) authen).getId();
             User user = userService.findUserByID(userId);
+            String fileName = ramdom() + file.getOriginalFilename() ;
 
-            myUpload.setSrcImg(file.getOriginalFilename());
+            myUpload.setSrcImg(fileName);
             myUpload.setUser(user);
             myUpLoadService.save(myUpload);
-            myUpLoadService.store(file);
+            myUpLoadService.store(file, fileName);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("error = " + e);
@@ -52,7 +53,7 @@ public class RestUploadFileController {
         }
     }
 
-    @PostMapping("/api/uploadmulti")
+    @PostMapping("/api/upload/multi")
     public List < ResponseEntity<Void> > uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
@@ -86,5 +87,9 @@ public class RestUploadFileController {
         return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
     }
 
+
+    private static Long ramdom() {
+        return (long) Math.floor((Math.random() * 1000000));
+    }
 }
 

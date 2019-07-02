@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MyUpLoadService {
     void save(MyUpload myUpload);
-    void store(MultipartFile file);
+    void store(MultipartFile file, String fileName);
 //    Resource loadFile(String fileName);
     List<MyUpload> findAllUploadFromUserId(Long id);
 }
