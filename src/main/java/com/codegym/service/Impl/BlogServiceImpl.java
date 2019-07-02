@@ -5,6 +5,8 @@ import com.codegym.model.User;
 import com.codegym.repository.BlogRepository;
 import com.codegym.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -57,7 +59,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Optional<Blog> findAllByTitleContaining(String title) {
+    public List<Blog> findAllByTitleContaining(String title) {
         return blogRepository.findAllByTitleContaining(title);
     }
 }
