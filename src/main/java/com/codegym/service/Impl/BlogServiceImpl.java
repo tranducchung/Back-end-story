@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -53,5 +54,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog findByIdAndUser(Long id, User user) {
         return blogRepository.findByIdAndUser(id, user);
+    }
+
+    @Override
+    public Optional<Blog> findAllByTitleContaining(String title) {
+        return blogRepository.findAllByTitleContaining(title);
     }
 }
