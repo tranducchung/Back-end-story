@@ -52,7 +52,7 @@ public class RestUploadFileController {
         }
     }
 
-    @PostMapping("/api/uploadmulti")
+    @PostMapping("/api/upload/multi")
     public List < ResponseEntity<Void> > uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()

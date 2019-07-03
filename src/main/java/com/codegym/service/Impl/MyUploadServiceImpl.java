@@ -44,20 +44,20 @@ public class MyUploadServiceImpl implements MyUpLoadService {
         }
     }
 
-//    @Override
-//    public Resource loadFile(String fileName) {
-//        try {
-//            Path file = rootLocation.resolve(fileName);
-//            Resource resource = new UrlResource(file.toUri());
-//            if (resource.exists() || resource.isReadable()) {
-//                return resource;
-//            } else {
-//                throw new RuntimeException("FAIL!");
-//            }
-//        } catch (MalformedURLException e) {
-//            throw new RuntimeException("FAIL!");
-//        }
-//    }
+    @Override
+    public Resource loadFile(String fileName) {
+        try {
+            Path file = rootLocation.resolve(fileName);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("FAIL!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("FAIL!");
+        }
+    }
 
     @Override
     public List<MyUpload> findAllUploadFromUserId(Long id) {
