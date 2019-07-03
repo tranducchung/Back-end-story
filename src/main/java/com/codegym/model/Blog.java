@@ -14,6 +14,7 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
+    private String urlVideo;
     private String createDate;
 
     @ManyToOne
@@ -82,5 +83,13 @@ public class Blog {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getUrlVideo() {
+        return urlVideo;
+    }
+
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
     }
 }
