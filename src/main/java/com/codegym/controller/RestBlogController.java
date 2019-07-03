@@ -158,7 +158,7 @@ public class RestBlogController {
         Long userId = ((UserPrinciple)authen).getId();
         List<Blog> listBlog = blogService.findAllByUserId(userId);
         if( listBlog.isEmpty()) {
-            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<Blog>>(listBlog,HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
     }

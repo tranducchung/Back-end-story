@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+
+@CrossOrigin(origins = "*")
 public class RestAPIUserController {
 
     @Autowired
@@ -52,12 +54,16 @@ public class RestAPIUserController {
 
     // share blog to user
 
-    @GetMapping("/api/shareToUser/{userId}/blogs/{blogId}")
+    @GetMapping("/api/users/shareToUser/{userId}/blogs/{blogId}")
     public ResponseEntity<Void> shareBlogToUser(@PathVariable("userId") Long userId, @PathVariable("blogId") Long blogId) {
 
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userShare = ((UserPrinciple) authen).getUsername();
+        Long idUserShare = ((UserPrinciple) authen).getId();
         Blog blog = blogService.findById(blogId);
+
+        System.out.println(userId);
+        System.out.println(blogId);
 
         User userReceive = userService.findUserByID(userId);
         if (userReceive != null && blog != null) {
@@ -66,9 +72,11 @@ public class RestAPIUserController {
             // get user receive by user id
 
             notification.setUserReceive(userReceive);
+            notification.setIdUserShare(idUserShare);
+            notification.setIdBlog(blogId);
 
             // set content notification
-            String contentNotification = "/api/users/" + userId + "/blogs/" + blogId;
+            String contentNotification = "/api/users/" + idUserShare + "/blogs/" + blogId;
             notification.setContent(contentNotification);
 
             notificationService.save(notification);

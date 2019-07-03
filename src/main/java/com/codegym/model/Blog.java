@@ -14,6 +14,7 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
+    private String iframe;
     private ZonedDateTime createDate;
 
     @ManyToOne
@@ -74,5 +75,13 @@ public class Blog {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getIframe() {
+        return iframe;
+    }
+
+    public void setIframe(String iframe) {
+        this.iframe = iframe;
     }
 }

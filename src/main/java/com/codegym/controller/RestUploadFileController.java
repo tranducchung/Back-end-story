@@ -56,7 +56,7 @@ public class RestUploadFileController {
 
 
     //get file by file name
-//
+
 //    @RequestMapping(value = {"/api/files/{filename:.+}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 //    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 //        Resource file = myUpLoadService.loadFile(filename);

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MyUploadRepository extends JpaRepository<MyUpload, Long> {
     List<MyUpload> findAllByUserId(Long id);
+
+
 }
