@@ -13,8 +13,6 @@ import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -26,9 +24,6 @@ public class RestBlogController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private JwtProvider jwtProvider;
 
     @Autowired
     private BlogService blogService;
@@ -73,7 +68,7 @@ public class RestBlogController {
     public ResponseEntity<Void> createBlog(@RequestBody Blog blog, HttpServletRequest request) {
         List<String> newTags = new ArrayList<>();
         List<Tags> tagsList = new ArrayList<>();
-        // get user from token
+        // get user from token s
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userID = ((UserPrinciple) principal).getId();
         User user = userService.findUserByID(userID);
