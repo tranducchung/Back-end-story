@@ -184,6 +184,7 @@ public class RestBlogController {
     public ResponseEntity<List<Blog>> findAllBlogByHashTag(@PathVariable("hashtag") String hashtag) {
         Tags tags = tagService.findByName(hashtag);
         if (tags == null) {
+            System.out.println("j");
             return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
         }
         List<Blog> blogList = blogService.findByTags(tags);
