@@ -10,7 +10,7 @@ public interface NotificationService {
     List<Notification> findAll();
     void delete(Notification notification);
 
-    List<Notification> findAllNotificationByUserIdAndOderById(Long id);
+    List<Notification> findAllByUserReceiveOrderById(User user);
 
     void deleteAllNotificationByUser(User user);
 

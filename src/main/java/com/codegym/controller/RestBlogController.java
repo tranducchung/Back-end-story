@@ -7,6 +7,8 @@ import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogService;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -41,7 +43,7 @@ public class RestBlogController {
 
     @GetMapping("/api/blogs")
     public ResponseEntity<List<Blog>> getAllBlog() {
-        List<Blog> listBlog = blogService.findAll();
+        List<Blog> listBlog = (List<Blog>) blogService.findAll();
         if (listBlog.isEmpty()) {
             return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
         }
@@ -65,17 +67,11 @@ public class RestBlogController {
     public ResponseEntity<Blog> getCustomBlog(@PathVariable("userId") Long id, @PathVariable("blogId") Long blogId) {
         User user = userService.findUserByID(id);
         Blog blog = blogService.findByIdAndUser(blogId, user);
-        if( user == null) {
+        if (blog == null) {
             return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
-        }
-        if( blog == null) {
-            return  new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Blog>(blog, HttpStatus.OK);
     }
-
-
-
 
     // create blog
 
@@ -151,10 +147,39 @@ public class RestBlogController {
         Long userId = ((UserPrinciple) authen).getId();
         List<Blog> listBlog = blogService.findAllByUserId(userId);
         if (listBlog.isEmpty()) {
-            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
     }
 
 
+    // find all blog by title
+    @GetMapping("/api/blogs/searchAll")
+    public ResponseEntity<List<Blog>> findAllBlogByTitleContaining(Optional<String> title) {
+        List<Blog> listBlog;
+        if (title.isPresent()) {
+            listBlog = blogService.findAllByTitleContaining(title.get());
+            return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+        }
+        listBlog = blogService.findAll();
+        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/blogs/user/searchall")
+    public ResponseEntity<List<Blog>> findAllBlogByTitleOfUser(@RequestParam("title") Optional<String> title) {
+        // get user from token
+        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long user_id = ((UserPrinciple) authen).getId();
+        User user = userService.findUserByID(user_id);
+        List<Blog> listBlog;
+        if (title.isPresent() && user != null) {
+            listBlog = blogService.findAllByTitleContainingAndUser(title.get(), user);
+            if ( listBlog.isEmpty() ) {
+                return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+        }
+        listBlog = blogService.findAllByUserId(user_id);
+        return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
+    }
 }

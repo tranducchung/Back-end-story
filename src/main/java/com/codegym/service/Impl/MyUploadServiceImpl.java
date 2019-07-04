@@ -35,10 +35,11 @@ public class MyUploadServiceImpl implements MyUpLoadService {
         myUploadRepository.save(myUpload);
     }
 
+
     @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, String fileName) {
         try {
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(fileName));
         } catch (Exception e) {
             throw new RuntimeException("FAIL!");
         }

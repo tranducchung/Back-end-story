@@ -41,10 +41,12 @@ public class RestUploadFileController {
             Long userId = ((UserPrinciple) authen).getId();
             User user = userService.findUserByID(userId);
 
-            myUpload.setSrcImg(file.getOriginalFilename());
+            String fileName = ramdom() + file.getOriginalFilename() ;
+
+            myUpload.setSrcImg(fileName);
             myUpload.setUser(user);
             myUpLoadService.save(myUpload);
-            myUpLoadService.store(file);
+            myUpLoadService.store(file, fileName);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("error = " + e);
@@ -86,5 +88,9 @@ public class RestUploadFileController {
         return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
     }
 
+
+    private static Long ramdom() {
+        return (long) Math.floor((Math.random() * 1000000));
+    }
 }
 

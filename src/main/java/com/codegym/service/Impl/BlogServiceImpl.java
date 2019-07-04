@@ -5,12 +5,15 @@ import com.codegym.model.User;
 import com.codegym.repository.BlogRepository;
 import com.codegym.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -53,5 +56,15 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog findByIdAndUser(Long id, User user) {
         return blogRepository.findByIdAndUser(id, user);
+    }
+
+    @Override
+    public List<Blog> findAllByTitleContaining(String title) {
+        return blogRepository.findAllByTitleContaining(title);
+    }
+
+    @Override
+    public List<Blog> findAllByTitleContainingAndUser(String title, User user) {
+        return blogRepository.findAllByTitleContainingAndUser(title, user);
     }
 }
