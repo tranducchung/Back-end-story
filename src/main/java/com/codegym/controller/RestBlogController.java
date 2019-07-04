@@ -1,40 +1,29 @@
 package com.codegym.controller;
 
 import com.codegym.model.Blog;
+import com.codegym.model.Tags;
 import com.codegym.model.User;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogService;
+import com.codegym.service.TagService;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
-import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class RestBlogController {
+
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private TagService tagService;
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private JwtProvider jwtProvider;
 
     @Autowired
     private BlogService blogService;
@@ -77,29 +66,23 @@ public class RestBlogController {
 
     @PostMapping("/api/blogs/create")
     public ResponseEntity<Void> createBlog(@RequestBody Blog blog, HttpServletRequest request) {
-
-        String jwt = request.getHeader("Authorization");
-        // get user from token
+        List<String> newTags = new ArrayList<>();
+        List<Tags> tagsList = new ArrayList<>();
+        // get user from token s
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userID = ((UserPrinciple) principal).getId();
         User user = userService.findUserByID(userID);
         blog.setUser(user);
-        // create date
-//
-        Date date = Calendar.getInstance().getTime();
-        String pattern = "MM/dd/yyyy HH:mm:ss";
-        DateFormat dateFormat = new SimpleDateFormat(pattern);
-        String strDate = dateFormat.format(date);
-        blog.setCreateDate(strDate);
+        String[] listTags = convertStringToArray(blog.getHashTags());
+        saveTagToDatabase(listTags, newTags);
+        addTagsToBlogModel(tagsList, newTags);
+        blog.setTags(tagsList);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
         return new ResponseEntity<Void>(httpHeaders, HttpStatus.CREATED);
     }
 
-
     // delete blog
-
     @RequestMapping(value = {"/api/blogs/{id}"}, method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteBlog(@PathVariable("id") Long id) {
         Blog blog = blogService.findById(id);
@@ -174,7 +157,7 @@ public class RestBlogController {
         List<Blog> listBlog;
         if (title.isPresent() && user != null) {
             listBlog = blogService.findAllByTitleContainingAndUser(title.get(), user);
-            if ( listBlog.isEmpty() ) {
+            if (listBlog.isEmpty()) {
                 return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
@@ -182,4 +165,67 @@ public class RestBlogController {
         listBlog = blogService.findAllByUserId(user_id);
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
     }
+
+    // find all blog by tag
+
+    @GetMapping("/api/blogs/hashtag/{hashtag}")
+    public ResponseEntity<List<Blog>> findAllBlogByHashTag(@PathVariable("hashtag") String hashtag) {
+        Tags tags = tagService.findByName(hashtag);
+        if (tags == null) {
+            System.out.println("j");
+            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+        }
+        List<Blog> blogList = blogService.findByTags(tags);
+        if (blogList.isEmpty()) {
+            return new ResponseEntity<List<Blog>>(blogList, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Blog>>(blogList, HttpStatus.OK);
+    }
+
+
+    private String[] convertStringToArray(String hashtag) {
+        return hashtag.split("#");
+    }
+
+
+    // add tag to tag table
+
+    private void addTagsToTagsTable(Tags tags) {
+        if (!tagService.existsByName(tags.getName())) {
+            tagService.save(tags);
+        }
+    }
+
+    private void saveTagToDatabase(String[] listTags, List<String> newTags) {
+        for (int i = 0; i < listTags.length; i++) {
+            if (!newTags.contains(listTags[i])) {
+                newTags.add(listTags[i]);
+                if (!tagService.existsByName(listTags[i])) {
+                    Tags tags = new Tags();
+                    tags.setName(listTags[i]);
+                    tagService.save(tags);
+                }
+            }
+        }
+    }
+
+    private void addTagsToBlogModel(List<Tags> tagsList, List<String> newTags) {
+        for (int i = 0; i < newTags.size(); i++) {
+            Tags tags = tagService.findByName(newTags.get(i));
+            if (tags != null) {
+                tagsList.add(tags);
+            }
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
