@@ -1,10 +1,12 @@
 package com.codegym.controller;
 
 import com.codegym.model.Blog;
+import com.codegym.model.Tags;
 import com.codegym.model.User;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogService;
+import com.codegym.service.TagService;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,10 @@ import java.util.*;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class RestBlogController {
+
+    @Autowired
+    private TagService tagService;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -86,11 +92,37 @@ public class RestBlogController {
         blog.setUser(user);
         // create date
 //
+        System.out.println(blog.getHashTags());
         Date date = Calendar.getInstance().getTime();
         String pattern = "MM/dd/yyyy HH:mm:ss";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
         String strDate = dateFormat.format(date);
         blog.setCreateDate(strDate);
+
+        String[] listTags = convertStringToArray(blog.getHashTags());
+        System.out.println(listTags);
+        List<String> newTags = new ArrayList<>();
+        List<Tags> tagsList = new ArrayList<>();
+        for (int i = 0; i < listTags.length; i++) {
+            if (!newTags.contains(listTags[i])) {
+                newTags.add(listTags[i]);
+                //newTags.remove(1);
+                if (!tagService.existsByName(listTags[i])) {
+                    Tags tags = new Tags();
+                    tags.setName(listTags[i]);
+                    tagService.save(tags);
+                }
+            }
+        }
+
+        for (int i = 0; i < newTags.size(); i++) {
+            Tags tags = tagService.findByName(newTags.get(i));
+            if (tags != null) {
+                tagsList.add(tags);
+            }
+        }
+        System.out.println(newTags);
+        blog.setTags(tagsList);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
 //        httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
@@ -174,7 +206,7 @@ public class RestBlogController {
         List<Blog> listBlog;
         if (title.isPresent() && user != null) {
             listBlog = blogService.findAllByTitleContainingAndUser(title.get(), user);
-            if ( listBlog.isEmpty() ) {
+            if (listBlog.isEmpty()) {
                 return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
@@ -182,4 +214,48 @@ public class RestBlogController {
         listBlog = blogService.findAllByUserId(user_id);
         return new ResponseEntity<List<Blog>>(listBlog, HttpStatus.OK);
     }
+
+    // find all blog by tag
+
+    @GetMapping("/api/blogs/hashtag/{hashtag}")
+    public ResponseEntity<List<Blog>> findAllBlogByHashTag(@PathVariable("hashtag") String hashtag) {
+        Tags tags = tagService.findByName(hashtag);
+        if(tags == null) {
+            return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
+        }
+        List<Blog> blogList = blogService.findByTags(tags);
+        if( blogList.isEmpty()) {
+            return new ResponseEntity<List<Blog>>(blogList, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Blog>>(blogList, HttpStatus.OK);
+    }
+
+
+    private String[] convertStringToArray(String hashtag) {
+        return hashtag.split("#");
+    }
+
+
+    // add tag to tag table
+
+    private void addTagsToTagsTable(Tags tags) {
+        if (!tagService.existsByName(tags.getName())) {
+            tagService.save(tags);
+        }
+    }
+
+    private void saveTagToDatabase(List<String> listTag) {
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+

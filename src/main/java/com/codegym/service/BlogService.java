@@ -1,6 +1,7 @@
 package com.codegym.service;
 
 import com.codegym.model.Blog;
+import com.codegym.model.Tags;
 import com.codegym.model.User;
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface BlogService {
     List<Blog> findAllByTitleContaining(String title);
 
     List<Blog> findAllByTitleContainingAndUser(String title, User user);
+
+    List<Blog> findByTags(Tags tags);
+
 }

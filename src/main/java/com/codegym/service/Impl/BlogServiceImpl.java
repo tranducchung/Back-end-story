@@ -1,6 +1,7 @@
 package com.codegym.service.Impl;
 
 import com.codegym.model.Blog;
+import com.codegym.model.Tags;
 import com.codegym.model.User;
 import com.codegym.repository.BlogRepository;
 import com.codegym.service.BlogService;
@@ -66,5 +67,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> findAllByTitleContainingAndUser(String title, User user) {
         return blogRepository.findAllByTitleContainingAndUser(title, user);
+    }
+
+    @Override
+    public List<Blog> findByTags(Tags tags) {
+        return blogRepository.findAllByTags(tags);
     }
 }
