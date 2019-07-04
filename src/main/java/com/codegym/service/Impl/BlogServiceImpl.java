@@ -10,9 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void save(Blog blog) {
+        Date date = Calendar.getInstance().getTime();
+        String pattern = "MM/dd/yyyy HH:mm:ss";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        String strDate = dateFormat.format(date);
+        blog.setCreateDate(strDate);
         blogRepository.save(blog);
     }
 

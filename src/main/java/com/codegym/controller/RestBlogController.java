@@ -78,19 +78,12 @@ public class RestBlogController {
         Long userID = ((UserPrinciple) principal).getId();
         User user = userService.findUserByID(userID);
         blog.setUser(user);
-        // create date
-        Date date = Calendar.getInstance().getTime();
-        String pattern = "MM/dd/yyyy HH:mm:ss";
-        DateFormat dateFormat = new SimpleDateFormat(pattern);
-        String strDate = dateFormat.format(date);
-        blog.setCreateDate(strDate);
         String[] listTags = convertStringToArray(blog.getHashTags());
         saveTagToDatabase(listTags, newTags);
         addTagsToBlogModel(tagsList, newTags);
         blog.setTags(tagsList);
         blogService.save(blog);
         HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(ucBuilder.path("/blog/{id}").buildAndExpand(blog.getId()).toUri());
         return new ResponseEntity<Void>(httpHeaders, HttpStatus.CREATED);
     }
 
