@@ -1,6 +1,7 @@
 package com.codegym.repository;
 
 import com.codegym.model.Blog;
+import com.codegym.model.Tags;
 import com.codegym.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     List<Blog> findAllByTitleContaining(String title);
 
     List<Blog> findAllByTitleContainingAndUser(String title, User user);
+
+    List<Blog> findAllByTags(Tags tags);
 
 }

@@ -65,7 +65,6 @@ public class RestAPIUserController {
         Long idUserShare = ((UserPrinciple) authen).getId();
         System.out.println("Id_userShare = " + idUserShare);
         Blog blog = blogService.findById(blogId);
-
         System.out.println(userId);
         System.out.println(blogId);
 
@@ -78,8 +77,10 @@ public class RestAPIUserController {
             notification.setUserReceive(userReceive);
 
             // set content notification
-            String contentNotification = "/api/users/" + idUserShare + "/blogs/" + blogId;
+            String contentNotification = idUserShare + "/blogs/" + blogId;
             notification.setContent(contentNotification);
+            notification.setIdBlog(blogId);
+            notification.setIdUser(idUserShare);
             notificationService.save(notification);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
@@ -96,7 +97,7 @@ public class RestAPIUserController {
             Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Long user_id_share = ((UserPrinciple)authen).getId();
             User user_share = userService.findUserByID(user_id_share);
-            String content = user_share.getUsername() + " shared to you his blog by Email: " + "/api/users/" + user_id_share + "/blogs/" + blogId;
+            String content = user_share.getUsername() + " shared to you his blog by Email: " + "http://localhost:4200/notification/" + user_id_share + "/blog/" + blogId;
 
             // get user_receive by user_id
             User userReceive = userService.findUserByID(userId);
@@ -110,6 +111,8 @@ public class RestAPIUserController {
             notification.setUserReceive(userReceive);
             notification.setUserShare(user_share.getUsername());
             notification.setContent(content);
+            notification.setIdUser(user_id_share);
+            notification.setIdBlog(blogId);
             notificationService.save(notification);
             // send email
             sendEmail(userReceive.getEmail(), MyConstants.MY_EMAIL, "Share Blog", content);
