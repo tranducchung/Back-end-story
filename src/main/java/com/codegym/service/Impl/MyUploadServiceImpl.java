@@ -27,6 +27,7 @@ public class MyUploadServiceImpl implements MyUpLoadService {
 
     private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
+
     @Autowired
     private MyUploadRepository myUploadRepository;
 

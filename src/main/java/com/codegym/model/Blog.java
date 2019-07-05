@@ -14,6 +14,7 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
+    private String urlVideo;
     private String createDate;
 
     @ManyToOne
@@ -29,6 +30,7 @@ public class Blog {
         this.user = user;
     }
 
+
 //    public Blog(String content, String title, String createDate, User user) {
 //        this.content = content;
 //        this.title = title;
@@ -36,13 +38,15 @@ public class Blog {
 //        this.user = user;
 //    }
 //
-//    public Blog(Long id, String content, String title, String createDate, User user) {
-//        this.id = id;
-//        this.content = content;
-//        this.title = title;
-//        this.createDate = createDate;
-//        this.user = user;
-//    }
+
+
+    public Blog(String content, String title, String urlVideo, String createDate, User user) {
+        this.content = content;
+        this.title = title;
+        this.urlVideo = urlVideo;
+        this.createDate = createDate;
+        this.user = user;
+    }
 
     public String getCreateDate() {
         return createDate;
@@ -82,5 +86,13 @@ public class Blog {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getUrlVideo() {
+        return urlVideo;
+    }
+
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
     }
 }
