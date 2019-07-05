@@ -23,4 +23,5 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     List<Blog> findAllByTitleContaining(String title);
 
     List<Blog> findAllByTitleContainingAndUser(String title, User user);
+
 }

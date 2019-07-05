@@ -96,7 +96,7 @@ public class RestAPIUserController {
             Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Long user_id_share = ((UserPrinciple)authen).getId();
             User user_share = userService.findUserByID(user_id_share);
-            String content = user_share.getUsername() + " shared to you his blog by Email: " + "http://localhost:8080/api/users/" + user_id_share + "/blogs/" + blogId;
+            String content = user_share.getUsername() + " shared to you his blog by Email: " + "/api/users/" + user_id_share + "/blogs/" + blogId;
 
             // get user_receive by user_id
             User userReceive = userService.findUserByID(userId);
