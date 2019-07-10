@@ -105,6 +105,8 @@ public class RestBlogController {
         }
         blogInDB.setTitle(blog.getTitle());
         blogInDB.setContent(blog.getContent());
+        blogInDB.setUrlVideo(blog.getUrlVideo());
+        blogInDB.setHashTags(blog.getHashTags());
         blogService.save(blogInDB);
         return new ResponseEntity<Blog>(blogInDB, HttpStatus.OK);
     }

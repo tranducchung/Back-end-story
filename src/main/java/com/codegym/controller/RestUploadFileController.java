@@ -30,7 +30,7 @@ public class RestUploadFileController {
     private MyUpLoadService myUpLoadService;
 
     @PostMapping(value = "/api/upload")
-    public ResponseEntity<Void> upLoadFile(@RequestBody @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> upLoadFile(@RequestParam("file") MultipartFile file) {
         if (file == null) {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
