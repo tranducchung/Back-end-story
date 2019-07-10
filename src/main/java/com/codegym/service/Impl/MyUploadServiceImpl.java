@@ -21,11 +21,11 @@ import java.util.List;
 
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
+//
+//    @Value("${path.file-upload}")
+//    private URI path;
 
-    @Value("${path.file-upload}")
-    private URI path;
-
-    private final Path rootLocation = Paths.get("/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir");
+    private final Path rootLocation = Paths.get("/home/nbthanh/Du-An/Back-end-story/src/main/resources/upload-dir");
 
     @Autowired
     private MyUploadRepository myUploadRepository;
