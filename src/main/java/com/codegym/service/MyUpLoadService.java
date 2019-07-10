@@ -12,4 +12,8 @@ public interface MyUpLoadService {
     Resource loadFile(String fileName);
     void store(MultipartFile file, String fileName);
     List<MyUpload> findAllUploadFromUserId(Long id);
+
+    MyUpload findMyUploadById(Long id);
+
+    void deleteUpload(MyUpload myUpload);
 }
