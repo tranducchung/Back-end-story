@@ -98,6 +98,8 @@ public class RestBlogController {
 
     @RequestMapping(value = {"/api/blogs/{id}"}, method = RequestMethod.PUT)
     public ResponseEntity<Blog> editBlog(@RequestBody Blog blog, @PathVariable("id") Long id) {
+        List<String> newTags = new ArrayList<>();
+        List<Tags> tagsList = new ArrayList<>();
 
         Blog blogInDB = blogService.findById(id);
         if (blogInDB == null) {
@@ -107,6 +109,10 @@ public class RestBlogController {
         blogInDB.setContent(blog.getContent());
         blogInDB.setUrlVideo(blog.getUrlVideo());
         blogInDB.setHashTags(blog.getHashTags());
+        String[] listTags = convertStringToArray(blog.getHashTags());
+        saveTagToDatabase(listTags, newTags);
+        addTagsToBlogModel(tagsList, newTags);
+        blogInDB.setTags(tagsList);
         blogService.save(blogInDB);
         return new ResponseEntity<Blog>(blogInDB, HttpStatus.OK);
     }
