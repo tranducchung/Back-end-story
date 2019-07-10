@@ -46,7 +46,7 @@ public class NotificationControllerAPI {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/notifi/delete{id}")
+    @DeleteMapping("/api/notifi/delete/{id}")
     public ResponseEntity<Void> deleteOneNotificationById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);

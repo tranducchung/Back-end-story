@@ -1,10 +1,9 @@
 package com.codegym.model;
 
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.Optional;
+
+import java.util.List;
 
 @Entity
 @Table(name = "blog")
@@ -16,29 +15,29 @@ public class Blog {
     private String title;
     private String urlVideo;
     private String createDate;
+    private String hashTags;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany
+    @JoinTable(name = "blog_tag",
+            joinColumns = @JoinColumn(name = "blog_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tags> tags;
+
     public Blog() {
     }
 
-    public Blog(String content, String title, User user) {
+
+    public Blog(String content, String title, String createDate, User user, String hashTags) {
         this.content = content;
         this.title = title;
+        this.createDate = createDate;
         this.user = user;
+        this.hashTags = hashTags;
     }
-
-
-//    public Blog(String content, String title, String createDate, User user) {
-//        this.content = content;
-//        this.title = title;
-//        this.createDate = createDate;
-//        this.user = user;
-//    }
-//
-
 
     public Blog(String content, String title, String urlVideo, String createDate, User user) {
         this.content = content;
@@ -46,6 +45,23 @@ public class Blog {
         this.urlVideo = urlVideo;
         this.createDate = createDate;
         this.user = user;
+    }
+
+
+    public String getHashTags() {
+        return hashTags;
+    }
+
+    public void setHashTags(String hashTags) {
+        this.hashTags = hashTags;
+    }
+
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
     }
 
     public String getCreateDate() {
