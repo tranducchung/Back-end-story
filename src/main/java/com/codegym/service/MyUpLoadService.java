@@ -4,14 +4,12 @@ import com.codegym.model.MyUpload;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public interface MyUpLoadService {
     void save(MyUpload myUpload);
 //    void store(MultipartFile file);
     Resource loadFile(String fileName);
     void store(MultipartFile file, String fileName);
-    List<MyUpload> findAllUploadFromUserId(Long id);
+    //List<MyUpload> findAllUploadFromUserId(Long id);
 
     MyUpload findMyUploadById(Long id);
 
