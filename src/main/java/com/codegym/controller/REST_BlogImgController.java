@@ -73,9 +73,6 @@ public class REST_BlogImgController {
                 .collect(Collectors.toList());
     }
 
-
-
-
     private User getUserFromToken() {
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id_user = ((UserPrinciple)authen).getId();
