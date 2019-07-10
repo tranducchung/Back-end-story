@@ -1,13 +1,9 @@
 package com.codegym.model;
 
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Table(name = "blog")
@@ -32,28 +28,6 @@ public class Blog {
     private List<Tags> tags;
 
     public Blog() {
-    }
-
-    public Blog(String content, String title, User user) {
-        this.content = content;
-        this.title = title;
-        this.user = user;
-    }
-
-    public Blog(String content, String title, String createDate, User user) {
-        this.content = content;
-        this.title = title;
-        this.createDate = createDate;
-        this.user = user;
-    }
-
-
-    public Blog(String content, String title, String createDate, User user, String hashTags) {
-        this.content = content;
-        this.title = title;
-        this.createDate = createDate;
-        this.user = user;
-        this.hashTags = hashTags;
     }
 
     //    public Blog(String content, String title, String createDate, User user) {

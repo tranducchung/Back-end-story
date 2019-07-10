@@ -20,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -35,7 +37,7 @@ public class REST_BlogImgController {
     @Autowired
     private MyUpLoadService myUpLoadService;
 
-    @PostMapping(value = "/api/blogimgs",consumes = { "multipart/mixed", "multipart/form-data" })
+    @PostMapping(value = "/api/blogimgs")
     public ResponseEntity<Void> createBlogImg(@RequestParam("data") String blogImg, @RequestParam("file") MultipartFile file) {
         if (blogImg == null || file == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -63,6 +65,13 @@ public class REST_BlogImgController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/api/blogimgs/create")
+    public List < ResponseEntity<Void> > createBlogImgs(@RequestParam("data") String blogImg,@RequestParam("files") MultipartFile[] files) {
+        return Arrays.asList(files)
+                .stream()
+                .map(file -> createBlogImg(blogImg,file))
+                .collect(Collectors.toList());
+    }
 
 
 

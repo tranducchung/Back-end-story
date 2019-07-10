@@ -40,6 +40,7 @@ public class RestUploadFileController {
             Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Long userId = ((UserPrinciple) authen).getId();
             User user = userService.findUserByID(userId);
+
             String fileName = ramdom() + file.getOriginalFilename() ;
 
             myUpload.setSrcImg(fileName);

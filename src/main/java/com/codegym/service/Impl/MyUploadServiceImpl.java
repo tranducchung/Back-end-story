@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
-
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -21,11 +20,13 @@ import java.util.List;
 
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
-//
-//    @Value("${path.file-upload}")
-//    private URI path;
 
-    private final Path rootLocation = Paths.get("/home/nbthanh/Du-An/Back-end-story/src/main/resources/upload-dir");
+
+    @Value("${path.file-upload}")
+    private URI path;
+
+    private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
+
 
     @Autowired
     private MyUploadRepository myUploadRepository;
@@ -34,6 +35,7 @@ public class MyUploadServiceImpl implements MyUpLoadService {
     public void save(MyUpload myUpload) {
         myUploadRepository.save(myUpload);
     }
+
 
     @Override
     public void store(MultipartFile file, String fileName) {
@@ -44,20 +46,20 @@ public class MyUploadServiceImpl implements MyUpLoadService {
         }
     }
 
-//    @Override
-//    public Resource loadFile(String fileName) {
-//        try {
-//            Path file = rootLocation.resolve(fileName);
-//            Resource resource = new UrlResource(file.toUri());
-//            if (resource.exists() || resource.isReadable()) {
-//                return resource;
-//            } else {
-//                throw new RuntimeException("FAIL!");
-//            }
-//        } catch (MalformedURLException e) {
-//            throw new RuntimeException("FAIL!");
-//        }
-//    }
+    @Override
+    public Resource loadFile(String fileName) {
+        try {
+            Path file = rootLocation.resolve(fileName);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("FAIL!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("FAIL!");
+        }
+    }
 
     @Override
     public List<MyUpload> findAllUploadFromUserId(Long id) {
