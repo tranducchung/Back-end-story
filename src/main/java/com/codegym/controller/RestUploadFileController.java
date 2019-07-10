@@ -6,14 +6,13 @@ import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.MyUpLoadService;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,6 +59,20 @@ public class RestUploadFileController {
                 .stream()
                 .map(file -> upLoadFile(file))
                 .collect(Collectors.toList());
+    }
+
+
+    @DeleteMapping("/api/upload/{id}")
+    public ResponseEntity<Void> deleteImg(@PathVariable("id") Long id) {
+        String url = "/home/nbthanh/Du-An/Back-end-story/src/main/resources/upload-dir/";
+        MyUpload myUpload = myUpLoadService.findMyUploadById(id);
+        File file = new File(url + myUpload.getSrcImg());
+        if (file.exists()) {
+            file.delete();
+            myUpLoadService.deleteUpload(myUpload);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
     //get file by file name
