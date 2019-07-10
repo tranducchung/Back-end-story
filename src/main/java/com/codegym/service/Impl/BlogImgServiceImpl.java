@@ -16,4 +16,15 @@ public class BlogImgServiceImpl implements BlogImgService {
     public void save(BlogImg blogImg) {
         blogImgRepository.save(blogImg);
     }
+
+//    @Override
+//    public List<BlogImg> getAllBlogImgByUser(User user) {
+//        return blogImgRepository.findAllByUser(user);
+//    }
+
+
+    @Override
+    public BlogImg findById(Long id) {
+        return blogImgRepository.findById(id).get();
+    }
 }

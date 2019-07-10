@@ -1,14 +1,13 @@
 package com.codegym.controller;
 
+import com.codegym.model.BlogImg;
 import com.codegym.model.MyUpload;
-import com.codegym.model.User;
-import com.codegym.security.service.UserPrinciple;
+import com.codegym.service.BlogImgService;
 import com.codegym.service.MyUpLoadService;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +20,8 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class RestUploadFileController {
+    @Autowired
+    private BlogImgService blogImgService;
 
     @Autowired
     private UserService userService;
@@ -28,22 +29,21 @@ public class RestUploadFileController {
     @Autowired
     private MyUpLoadService myUpLoadService;
 
-    @PostMapping(value = "/api/upload")
-    public ResponseEntity<Void> upLoadFile(@RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/api/upload/{id}")
+    public ResponseEntity<Void> upLoadFile(@RequestParam("file") MultipartFile file, @PathVariable("id") Long idBlogImg) {
         if (file == null) {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
         try {
             MyUpload myUpload = new MyUpload();
-            // get user from token
-            Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Long userId = ((UserPrinciple) authen).getId();
-            User user = userService.findUserByID(userId);
-
+//            // get user from token
+//            Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            Long userId = ((UserPrinciple) authen).getId();
+//            User user = userService.findUserByID(userId);
             String fileName = ramdom() + file.getOriginalFilename() ;
-
             myUpload.setSrcImg(fileName);
-            myUpload.setUser(user);
+            BlogImg blogImg = blogImgService.findById(idBlogImg);
+            myUpload.setBlogImg(blogImg);
             myUpLoadService.save(myUpload);
             myUpLoadService.store(file, fileName);
             return new ResponseEntity<Void>(HttpStatus.OK);
@@ -53,11 +53,11 @@ public class RestUploadFileController {
         }
     }
 
-    @PostMapping("/api/upload/multi")
-    public List < ResponseEntity<Void> > uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    @PostMapping("/api/upload/multi/{id}")
+    public List < ResponseEntity<Void> > uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @PathVariable("id") Long id) {
         return Arrays.asList(files)
                 .stream()
-                .map(file -> upLoadFile(file))
+                .map(file -> upLoadFile(file, id))
                 .collect(Collectors.toList());
     }
 
@@ -87,19 +87,19 @@ public class RestUploadFileController {
 
 
     // get all file upload by user id
-
-    @RequestMapping(value = {"/api/upload/getall"}, method = RequestMethod.GET)
-    public ResponseEntity<List<MyUpload>> getAllUploadFromUserId() {
-        // get User id From token
-        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = ((UserPrinciple) authen).getId();
-
-        List<MyUpload> listMyUpload = myUpLoadService.findAllUploadFromUserId(userId);
-        if (listMyUpload.isEmpty()) {
-            return new ResponseEntity<List<MyUpload>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
-    }
+//
+//    @RequestMapping(value = {"/api/upload/getall"}, method = RequestMethod.GET)
+//    public ResponseEntity<List<MyUpload>> getAllUploadFromUserId() {
+//        // get User id From token
+//        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Long userId = ((UserPrinciple) authen).getId();
+//
+//        List<MyUpload> listMyUpload = myUpLoadService.findAllUploadFromUserId(userId);
+//        if (listMyUpload.isEmpty()) {
+//            return new ResponseEntity<List<MyUpload>>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
+//    }
 
 
     private static Long ramdom() {
