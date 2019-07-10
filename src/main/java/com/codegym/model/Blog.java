@@ -63,13 +63,14 @@ public class Blog {
 //        this.user = user;
 //    }
 //
-//    public Blog(Long id, String content, String title, String createDate, User user) {
-//        this.id = id;
-//        this.content = content;
-//        this.title = title;
-//        this.createDate = createDate;
-//        this.user = user;
-//    }
+    public Blog(Long id, String content, String title, String createDate, User user, String hashTags) {
+        this.id = id;
+        this.content = content;
+        this.title = title;
+        this.createDate = createDate;
+        this.user = user;
+        this.hashTags = hashTags;
+    }
 
 
     public String getHashTags() {

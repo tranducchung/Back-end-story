@@ -34,6 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebAppConfiguration
 public class RestBlogControllerTest {
+    private static List<Blog> blogList;
+    private static Date DATE = Calendar.getInstance().getTime();
+    private static String PATTERN = "MM/dd/yyyy HH:mm:ss";
+    private static DateFormat DATE_FORMAT = new SimpleDateFormat(PATTERN);
+    private static String DATE_STRING = DATE_FORMAT.format(DATE);
 
     private MockMvc mockMvc;
 
@@ -51,21 +56,20 @@ public class RestBlogControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(restBlogController).addFilters(new CORSFilter()).build();
     }
 
-    private static List<Blog> blogList;
+
 
     @BeforeClass
     public static void setupTestData() {
+        //String content, String title, String createDate, User user, String hashTags
         blogList = new ArrayList<Blog>();
         User user = new User("Thanh", "NbThanh", "qweqe@gmail.com", "123123123");
-        Date date = Calendar.getInstance().getTime();
-        String pattern = "MM/dd/yyyy HH:mm:ss";
-        DateFormat dateFormat = new SimpleDateFormat(pattern);
-        String strDate = dateFormat.format(date);
-        blogList.add(new Blog(1L, "Helo world", "hello", strDate, user));
-        blogList.add(new Blog(2L, "Helo world", "hello", strDate, user));
-        blogList.add(new Blog(3L, "Helo world", "hello", strDate, user));
-        blogList.add(new Blog(4L, "Helo world", "hello", strDate, user));
-        blogList.add(new Blog(5L, "Helo world", "hello", strDate, user));
+
+        blogList.add(new Blog(1L, "Helo world", "hello", DATE_STRING, user, "#A#A#A#A#A#A#A#"));
+        blogList.add(new Blog(2L, "Helo world", "hello", DATE_STRING, user, "#A#A#A#A#A#A#A#"));
+        blogList.add(new Blog(3L, "Helo world", "hello", DATE_STRING, user, "#A#A#A#A#A#A#A#"));
+        blogList.add(new Blog(4L, "Helo world", "hello", DATE_STRING, user, "#A#A#A#A#A#A#A#"));
+        blogList.add(new Blog(5L, "Helo world", "hello", DATE_STRING, user, "#A#A#A#A#A#A#A#"));
+        blogList.add(new Blog(6L, "Helo world", "hello", DATE_STRING, user, "#A#A#A#A#A#A#A#"));
     }
 
     // test get all blog
@@ -77,7 +81,7 @@ public class RestBlogControllerTest {
         mockMvc.perform(get("/api/blogs"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$", hasSize(5)));
+                .andExpect(jsonPath("$", hasSize(6)));
     }
 
     // test get blog by id
@@ -85,11 +89,7 @@ public class RestBlogControllerTest {
     @Test
     public void test_getBlogBy_id() throws Exception {
         User user = new User("Thanh", "NbThanh", "qweqe@gmail.com", "123123123");
-        Date date = Calendar.getInstance().getTime();
-        String pattern = "MM/dd/yyyy HH:mm:ss";
-        DateFormat dateFormat = new SimpleDateFormat(pattern);
-        String strDate = dateFormat.format(date);
-        Blog blog = new Blog(1l, "Hello", "World", strDate, user);
+        Blog blog = new Blog(1l, "Hello", "World", DATE_STRING, user, "####A#A#A#A#A#A");
         when(blogService.findById((long) 1)).thenReturn(blog);
         mockMvc.perform(get("/api/blogs/{id}", 1))
                 .andExpect(status().isOk())
@@ -120,7 +120,7 @@ public class RestBlogControllerTest {
     @Test
     public void test_update_user_success() throws Exception {
         User user = new User("Thanh", "NbThanh", "qweqe@gmail.com", "123123123");
-        Blog blog = new Blog(6l, "Hello", "World", null, user);
+        Blog blog = new Blog(6l, "Hello", "World", null, user, "#A#A#A#A#A#A#a");
         when(blogService.findById(blog.getId())).thenReturn(blog);
         doNothing().when(blogService).save(blog);
         mockMvc.perform(
