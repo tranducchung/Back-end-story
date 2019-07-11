@@ -1,6 +1,5 @@
 package com.codegym.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -17,7 +16,5 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/resources/upload-dir/**")
                 .addResourceLocations("file:/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir/" );
-
-
     }
 }

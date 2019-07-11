@@ -43,6 +43,9 @@ public class RestUploadFileController {
             myUpload.setBlogImg(blogImg);
             myUpLoadService.save(myUpload);
             myUpLoadService.store(file, fileName);
+            List<MyUpload> myUploadList = blogImg.getListImg();
+            myUploadList.add(myUpload);
+            blogImg.setListImg(myUploadList);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("error = " + e);

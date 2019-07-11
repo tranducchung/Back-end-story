@@ -11,10 +11,10 @@ public class BlogImg {
     private Long id;
     private String title;
 
-    @OneToMany
-    private List<MyUpload> listMyUpload;
+    @OneToMany(mappedBy = "blogImg")
+    private List<MyUpload> listImg;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -50,11 +50,11 @@ public class BlogImg {
         this.title = title;
     }
 
-    public List<MyUpload> getListMyUpload() {
-        return listMyUpload;
+    public List<MyUpload> getListImg() {
+        return listImg;
     }
 
-    public void setListMyUpload(List<MyUpload> listMyUpload) {
-        this.listMyUpload = listMyUpload;
+    public void setListImg(List<MyUpload> listImg) {
+        this.listImg = listImg;
     }
 }
