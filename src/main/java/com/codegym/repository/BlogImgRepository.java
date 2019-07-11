@@ -12,4 +12,5 @@ public interface BlogImgRepository extends JpaRepository<BlogImg, Long> {
     List<BlogImg> findAllByUser(User user);
 
     BlogImg findByIdAndUser(Long id, User user);
+
 }
