@@ -11,8 +11,8 @@ public class BlogImg {
     private Long id;
     private String title;
 
-    @OneToMany(targetEntity = MyUpload.class)
-    private List<MyUpload> listImg;
+    @OneToMany
+    private List<MyUpload> listMyUpload;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,10 +25,6 @@ public class BlogImg {
         this.title = title;
     }
 
-    public BlogImg(String title, List<MyUpload> listImg) {
-        this.title = title;
-        this.listImg = listImg;
-    }
 
     public User getUser() {
         return user;
@@ -54,11 +50,11 @@ public class BlogImg {
         this.title = title;
     }
 
-    public List<MyUpload> getListImg() {
-        return listImg;
+    public List<MyUpload> getListMyUpload() {
+        return listMyUpload;
     }
 
-    public void setListImg(List<MyUpload> listImg) {
-        this.listImg = listImg;
+    public void setListMyUpload(List<MyUpload> listMyUpload) {
+        this.listMyUpload = listMyUpload;
     }
 }

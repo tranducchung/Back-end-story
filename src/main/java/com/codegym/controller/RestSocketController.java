@@ -40,12 +40,7 @@ public class RestSocketController {
         User user = userService.findUserByID(userID);
 
         if (message.containsKey("message")) {
-            if (message.containsKey("toId") && message.get("toId") != null && !message.get("toId").equals("")) {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("toId"), message);
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("fromId"), message);
-            } else {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher", message);
-            }
+           sendMessage(message);
             return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
         }
 
@@ -63,14 +58,17 @@ public class RestSocketController {
             messageConverted = null;
         }
         if (messageConverted != null) {
-            if (messageConverted.containsKey("toId") && messageConverted.get("toId") != null && !messageConverted.get("toId").equals("")) {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("toId"), messageConverted);
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("fromId"), message);
-            } else {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
-            }
+           sendMessage(messageConverted);
         }
         return messageConverted;
     }
 
+    public void sendMessage(Map<String, String> message) {
+        if (message.containsKey("toId") && message.get("toId") != null && !message.get("toId").equals("")) {
+            this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("toId"), message);
+            this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("fromId"), message);
+        } else {
+            this.simpMessagingTemplate.convertAndSend("/socket-publisher", message);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.codegym.service.Impl;
 
+import com.codegym.model.BlogImg;
 import com.codegym.model.MyUpload;
 import com.codegym.repository.MyUploadRepository;
 import com.codegym.service.MyUpLoadService;
@@ -15,6 +16,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
@@ -24,7 +26,6 @@ public class MyUploadServiceImpl implements MyUpLoadService {
 //    private URI path;
 
     private final Path rootLocation = Paths.get("/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir/");
-
 
     @Autowired
     private MyUploadRepository myUploadRepository;
@@ -73,5 +74,10 @@ public class MyUploadServiceImpl implements MyUpLoadService {
     @Override
     public void deleteUpload(MyUpload myUpload) {
         myUploadRepository.delete(myUpload);
+    }
+
+    @Override
+    public List<MyUpload> findAllByBlogImg(BlogImg blogImg) {
+        return myUploadRepository.findAllByBlogImg(blogImg);
     }
 }

@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.model.Blog;
 import com.codegym.model.BlogImg;
 import com.codegym.model.MyUpload;
 import com.codegym.service.BlogImgService;
@@ -36,10 +37,6 @@ public class RestUploadFileController {
         }
         try {
             MyUpload myUpload = new MyUpload();
-//            // get user from token
-//            Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            Long userId = ((UserPrinciple) authen).getId();
-//            User user = userService.findUserByID(userId);
             String fileName = ramdom() + file.getOriginalFilename() ;
             myUpload.setSrcImg(fileName);
             BlogImg blogImg = blogImgService.findById(idBlogImg);
@@ -101,6 +98,15 @@ public class RestUploadFileController {
 //        return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
 //    }
 
+    @RequestMapping(value = {"/api/upload/multi/AllByBlogImg/{id}"}, method = RequestMethod.GET)
+    public ResponseEntity<List<MyUpload>> getAllUploadFromBlogImg(@PathVariable("id") Long id) {
+        BlogImg blogImg = blogImgService.findById(id);
+        List<MyUpload> listMyUpload = myUpLoadService.findAllByBlogImg(blogImg);
+        if (listMyUpload.isEmpty()) {
+            return new ResponseEntity<List<MyUpload>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<MyUpload>>(listMyUpload, HttpStatus.OK);
+    }
 
     private static Long ramdom() {
         return (long) Math.floor((Math.random() * 1000000));
