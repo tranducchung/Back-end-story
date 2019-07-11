@@ -11,15 +11,22 @@ public class MyUpload {
     private String srcImg;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "blogImg_id")
+    private BlogImg blogImg;
 
     public MyUpload() {
     }
 
-    public MyUpload(String srcImg, User user) {
+    public MyUpload(String srcImg) {
         this.srcImg = srcImg;
-        this.user = user;
+    }
+
+    public BlogImg getBlogImg() {
+        return blogImg;
+    }
+
+    public void setBlogImg(BlogImg blogImg) {
+        this.blogImg = blogImg;
     }
 
     public Long getId() {
@@ -36,13 +43,5 @@ public class MyUpload {
 
     public void setSrcImg(String srcImg) {
         this.srcImg = srcImg;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

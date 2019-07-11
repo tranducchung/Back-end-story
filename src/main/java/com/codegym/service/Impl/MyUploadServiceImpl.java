@@ -4,26 +4,22 @@ import com.codegym.model.MyUpload;
 import com.codegym.repository.MyUploadRepository;
 import com.codegym.service.MyUpLoadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Service
 public class MyUploadServiceImpl implements MyUpLoadService {
 
 
-    @Value("${path.file-upload}")
-    private URI path;
+//    @Value("${path.file-upload}")
+//    private URI path;
 
     private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
@@ -61,9 +57,19 @@ public class MyUploadServiceImpl implements MyUpLoadService {
         }
     }
 
+//    @Override
+//    public List<MyUpload> findAllUploadFromUserId(Long id) {
+//        return myUploadRepository.findAllByUserId(id);
+//    }
+
+
     @Override
-    public List<MyUpload> findAllUploadFromUserId(Long id) {
-        return myUploadRepository.findAllByUserId(id);
+    public MyUpload findMyUploadById(Long id) {
+        return myUploadRepository.findById(id).get();
     }
 
+    @Override
+    public void deleteUpload(MyUpload myUpload) {
+        myUploadRepository.delete(myUpload);
+    }
 }

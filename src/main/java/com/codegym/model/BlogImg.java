@@ -11,13 +11,9 @@ public class BlogImg {
     private Long id;
     private String title;
 
-    @ManyToMany
-    @JoinTable(
-            name = "blogImg_upload",
-            joinColumns = @JoinColumn(name = "blogImg_id"),
-            inverseJoinColumns = @JoinColumn(name = "upload_id")
-    )
+    @OneToMany(targetEntity = MyUpload.class)
     private List<MyUpload> listImg;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
