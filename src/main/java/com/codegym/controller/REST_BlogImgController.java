@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 
 @RestController
@@ -38,6 +37,25 @@ public class REST_BlogImgController {
         blogImg.setUser(getUserFromToken());
         blogImgService.save(blogImg);
         return new ResponseEntity<Long>(blogImg.getId(), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/blogImgs")
+    public ResponseEntity<List<BlogImg>> getAllBlogImgByUser() {
+        List<BlogImg> blogImgList = blogImgService.getAllBlogImgByUser(getUserFromToken());
+        if (blogImgList.isEmpty()) {
+            return new ResponseEntity<List<BlogImg>>(blogImgList, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<BlogImg>>(blogImgList, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/api/blogImgs/{id}")
+    public ResponseEntity<BlogImg> getBlogImgById(@PathVariable("id") Long id) {
+        BlogImg blogImg = blogImgService.findById(id);
+        if (blogImg == null) {
+            return new ResponseEntity<BlogImg>(blogImg, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<BlogImg>(blogImg, HttpStatus.OK);
     }
 
 
