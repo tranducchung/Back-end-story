@@ -11,4 +11,6 @@ public interface BlogImgService {
     List<BlogImg> getAllBlogImgByUser(User user);
 
     BlogImg findById(Long id);
+
+    BlogImg findByIdAndUser(Long id, User user);
 }

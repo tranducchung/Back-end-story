@@ -30,4 +30,9 @@ public class BlogImgServiceImpl implements BlogImgService {
     public BlogImg findById(Long id) {
         return blogImgRepository.findById(id).get();
     }
+
+    @Override
+    public BlogImg findByIdAndUser(Long id, User user) {
+        return blogImgRepository.findByIdAndUser(id, user);
+    }
 }
