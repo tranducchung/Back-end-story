@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BlogImgRepository extends JpaRepository<BlogImg, Long> {
+    //List<BlogImg> findAllByUser(User user);
 }
