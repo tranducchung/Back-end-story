@@ -39,12 +39,12 @@ public class RestUploadFileController {
             String fileName = ramdom() + file.getOriginalFilename() ;
             myUpload.setSrcImg(fileName);
             BlogImg blogImg = blogImgService.findById(idBlogImg);
- //           myUpload.setBlogImg(blogImg);
+            myUpload.setBlogImg(blogImg);
             myUpLoadService.save(myUpload);
             myUpLoadService.store(file, fileName);
             List<MyUpload> myUploadList = blogImg.getListImg();
             myUploadList.add(myUpload);
-            blogImgService.save(blogImg);
+            blogImg.setListImg(myUploadList);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("error = " + e);

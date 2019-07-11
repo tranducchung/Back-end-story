@@ -10,7 +10,19 @@ public class MyUpload {
     private Long id;
     private String srcImg;
 
+    @ManyToOne
+    @JoinColumn(name = "myUpload_id", nullable = false)
+    private BlogImg blogImg;
+
     public MyUpload() {
+    }
+
+//    public BlogImg getBlogImg() {
+//        return blogImg;
+//    }
+
+    public void setBlogImg(BlogImg blogImg) {
+        this.blogImg = blogImg;
     }
 
     public MyUpload(String srcImg) {
