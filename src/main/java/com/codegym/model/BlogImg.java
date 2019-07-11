@@ -11,10 +11,10 @@ public class BlogImg {
     private Long id;
     private String title;
 
-    @OneToMany(targetEntity = MyUpload.class)
+    @OneToMany(mappedBy = "blogImg")
     private List<MyUpload> listImg;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
