@@ -1,11 +1,15 @@
 package com.codegym.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "blog")
 public class Blog {
     @Id
@@ -27,6 +31,10 @@ public class Blog {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tags> tags;
 
+
+    @OneToMany(targetEntity = Comment.class)
+    List<Comment> commentList;
+
     public Blog() {
     }
 
@@ -46,6 +54,13 @@ public class Blog {
         this.hashTags = hashTags;
     }
 
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
 
     public String getHashTags() {
         return hashTags;
