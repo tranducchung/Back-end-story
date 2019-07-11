@@ -82,20 +82,20 @@ public class REST_BlogImgController {
         BlogImg blogImg = blogImgService.findById(idBlog);
         if ( blogImg != null) {
             List<MyUpload> myUploadList = myUpLoadService.findByBlogImg(blogImg);
-            for (int i = 0; i< myUploadList.size(); i++) {
-                String src = "/home/nbthanh/Du-An/Back-end-story/src/main/resources/upload-dir/" + myUploadList.get(i).getSrcImg();
-                deleteImg(src);
-                myUpLoadService.deleteAllByBlogImg(idBlog);
-            }
+            deleteImg(myUploadList);
+            myUpLoadService.deleteAllByBlogImg(idBlog);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
-    private static void deleteImg(String url) {
-        File file = new File(url);
-        if ( file.exists()) {
-            file.delete();
+    private static void deleteImg(List<MyUpload> uploadList) {
+        for(int i = 0; i< uploadList.size(); i++) {
+            String src = "/home/nbthanh/Du-An/Back-end-story/src/main/resources/upload-dir/" + uploadList.get(i).getSrcImg();
+            File file = new File(src);
+            if (file.exists()) {
+                file.delete();
+            }
         }
     }
 
