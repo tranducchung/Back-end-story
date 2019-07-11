@@ -29,14 +29,14 @@ public class REST_BlogImgController {
     private MyUpLoadService myUpLoadService;
 
     @PostMapping(value = "/api/blogImgs/create")
-    public ResponseEntity<Void> createAlbumImgs(@RequestBody BlogImg blogImg,
+    public ResponseEntity<Long> createAlbumImgs(@RequestBody BlogImg blogImg,
                                                 UriComponentsBuilder uriComponentsBuilder) {
         if (blogImg == null) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Long>(HttpStatus.BAD_REQUEST);
         }
         blogImg.setUser(getUserFromToken());
         blogImgService.save(blogImg);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<Long>(blogImg.getId(), HttpStatus.OK);
     }
 
     @GetMapping("/api/blogImgs")
