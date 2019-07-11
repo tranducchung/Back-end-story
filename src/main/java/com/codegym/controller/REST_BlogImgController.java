@@ -76,7 +76,6 @@ public class REST_BlogImgController {
         return new ResponseEntity<BlogImg>(HttpStatus.NOT_FOUND);
     }
 
-    // delete Blog img
     @DeleteMapping("/api/blogImgs/{idblog}")
     public ResponseEntity<Void> deleteAlbumImg(@PathVariable("idblog") Long idBlog) {
         BlogImg blogImg = blogImgService.findById(idBlog);
