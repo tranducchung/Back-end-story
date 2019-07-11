@@ -1,6 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.model.BlogImg;
+import com.codegym.model.MyUpload;
 import com.codegym.model.User;
 import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogImgService;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -74,7 +76,29 @@ public class REST_BlogImgController {
         return new ResponseEntity<BlogImg>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/")
+    // delete Blog img
+    @DeleteMapping("/api/blogImgs/{idblog}")
+    public ResponseEntity<Void> deleteAlbumImg(@PathVariable("idblog") Long idBlog) {
+        BlogImg blogImg = blogImgService.findById(idBlog);
+        if ( blogImg != null) {
+            List<MyUpload> myUploadList = myUpLoadService.findByBlogImg(blogImg);
+            for (int i = 0; i< myUploadList.size(); i++) {
+                String src = "/home/nbthanh/Du-An/Back-end-story/src/main/resources/upload-dir/" + myUploadList.get(i).getSrcImg();
+                deleteImg(src);
+                myUpLoadService.deleteAllByBlogImg(idBlog);
+            }
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    }
+
+    private static void deleteImg(String url) {
+        File file = new File(url);
+        if ( file.exists()) {
+            file.delete();
+        }
+    }
+
     private User getUserFromToken() {
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id_user = ((UserPrinciple) authen).getId();

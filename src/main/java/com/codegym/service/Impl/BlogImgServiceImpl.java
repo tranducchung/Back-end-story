@@ -7,6 +7,10 @@ import com.codegym.service.BlogImgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,6 +21,11 @@ public class BlogImgServiceImpl implements BlogImgService {
 
     @Override
     public void save(BlogImg blogImg) {
+        Date date = Calendar.getInstance().getTime();
+        String pattern = "MM/dd/yyyy HH:mm:ss";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        String strDate = dateFormat.format(date);
+        blogImg.setCreateDate(strDate);
         blogImgRepository.save(blogImg);
     }
 
