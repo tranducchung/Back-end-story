@@ -10,8 +10,8 @@ public class MyUpload {
     private Long id;
     private String srcImg;
 
-    @ManyToOne
-    @JoinColumn(name = "blogImg_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey =@ForeignKey (name = "blogImg_id") )
     private BlogImg blogImg;
 
     public MyUpload() {

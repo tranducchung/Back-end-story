@@ -29,6 +29,7 @@ public class RestUploadFileController {
     @Autowired
     private MyUpLoadService myUpLoadService;
 
+
     @PostMapping(value = "/api/upload/{id}")
     public ResponseEntity<Void> upLoadFile(@RequestParam("file") MultipartFile file, @PathVariable("id") Long idBlogImg) {
         if (file == null) {
@@ -36,16 +37,18 @@ public class RestUploadFileController {
         }
         try {
             MyUpload myUpload = new MyUpload();
-//            // get user from token
-//            Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            Long userId = ((UserPrinciple) authen).getId();
-//            User user = userService.findUserByID(userId);
             String fileName = ramdom() + file.getOriginalFilename() ;
             myUpload.setSrcImg(fileName);
+            
             BlogImg blogImg = blogImgService.findById(idBlogImg);
             myUpload.setBlogImg(blogImg);
+            
             myUpLoadService.save(myUpload);
             myUpLoadService.store(file, fileName);
+
+            List<MyUpload> myUploadList = blogImg.getListImg();
+            myUploadList.add(myUpload);
+            blogImg.setListImg(myUploadList);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("error = " + e);

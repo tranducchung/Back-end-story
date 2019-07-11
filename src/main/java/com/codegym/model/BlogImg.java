@@ -11,7 +11,7 @@ public class BlogImg {
     private Long id;
     private String title;
 
-    @OneToMany(targetEntity = MyUpload.class)
+    @OneToMany(targetEntity = MyUpload.class,fetch = FetchType.LAZY)
     private List<MyUpload> listImg;
 
     @ManyToOne
