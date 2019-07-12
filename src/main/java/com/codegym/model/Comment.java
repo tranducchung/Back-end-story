@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
@@ -21,11 +22,23 @@ public class Comment {
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
+    @OneToMany(targetEntity = Reply.class)
+    List<Reply> replyList;
+
+
     public Comment() {
     }
 
     public Comment(String content) {
         this.content = content;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
     }
 
     public Long getId() {
