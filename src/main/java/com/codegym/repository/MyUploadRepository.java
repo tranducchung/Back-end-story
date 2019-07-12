@@ -9,4 +9,6 @@ import java.util.List;
 public interface MyUploadRepository extends JpaRepository<MyUpload, Long> {
    // List<MyUpload> findAllByUserId(Long id);
     List<MyUpload> findAllByBlogImg(BlogImg blogImg);
+    void deleteAllByBlogImgId(Long id);
+
 }

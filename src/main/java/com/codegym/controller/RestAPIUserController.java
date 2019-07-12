@@ -111,7 +111,7 @@ public class RestAPIUserController {
             Long idUserShare = userShare.getId();
             User userReceive = userService.findUserByID(userId);
             BlogImg blogImg = blogImgService.findById(blogImgID);
-            String content = userShare.getUsername() + " share to you his album IMG: " + "http://localhost:4200/notification/" + userShare.getId() + "/albumImg/" + blogImgID;
+            String content = userShare.getUsername() + " share to you his album IMG: " + "http://localhost:4200/notification/" + userShare.getId() + "/blogImg/" + blogImgID;
             if (userReceive == null || blogImg == null) {
                 return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
             }

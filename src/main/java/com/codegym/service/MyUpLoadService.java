@@ -15,8 +15,9 @@ public interface MyUpLoadService {
     //List<MyUpload> findAllUploadFromUserId(Long id);
 
     MyUpload findMyUploadById(Long id);
-
     void deleteUpload(MyUpload myUpload);
-
     List<MyUpload> findAllByBlogImg(BlogImg blogImg);
+    List<MyUpload> findByBlogImg(BlogImg blogImg);
+
+    void deleteAllByBlogImg(Long id);
 }

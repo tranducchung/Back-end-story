@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@Transactional
 public class MyUploadServiceImpl implements MyUpLoadService {
 
 
@@ -81,5 +83,14 @@ public class MyUploadServiceImpl implements MyUpLoadService {
     @Override
     public List<MyUpload> findAllByBlogImg(BlogImg blogImg) {
         return myUploadRepository.findAllByBlogImg(blogImg);
+    }
+
+    public List<MyUpload> findByBlogImg(BlogImg blogImg) {
+        return myUploadRepository.findAllByBlogImg(blogImg);
+    }
+
+    @Override
+    public void deleteAllByBlogImg(Long id) {
+        myUploadRepository.deleteAllByBlogImgId(id);
     }
 }
