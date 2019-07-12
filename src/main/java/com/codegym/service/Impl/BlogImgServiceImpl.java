@@ -44,4 +44,9 @@ public class BlogImgServiceImpl implements BlogImgService {
     public BlogImg findByIdAndUser(Long id, User user) {
         return blogImgRepository.findByIdAndUser(id, user);
     }
+
+    @Override
+    public void deleteBlogImg(Long idBlogImg) {
+        blogImgRepository.deleteById(idBlogImg);
+    }
 }

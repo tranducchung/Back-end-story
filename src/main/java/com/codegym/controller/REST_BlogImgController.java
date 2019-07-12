@@ -85,6 +85,7 @@ public class REST_BlogImgController {
             List<MyUpload> myUploadList = myUpLoadService.findByBlogImg(blogImg);
             deleteImg(myUploadList);
             myUpLoadService.deleteAllByBlogImg(idBlog);
+            blogImgService.deleteBlogImg(idBlog);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

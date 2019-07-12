@@ -13,4 +13,6 @@ public interface BlogImgService {
     BlogImg findById(Long id);
 
     BlogImg findByIdAndUser(Long id, User user);
+
+    void deleteBlogImg(Long idBlogImg);
 }
