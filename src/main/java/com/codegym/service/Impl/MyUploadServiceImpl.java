@@ -4,12 +4,14 @@ import com.codegym.model.MyUpload;
 import com.codegym.repository.MyUploadRepository;
 import com.codegym.service.MyUpLoadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,8 +20,8 @@ import java.nio.file.Paths;
 public class MyUploadServiceImpl implements MyUpLoadService {
 
 
-//    @Value("${path.file-upload}")
-//    private URI path;
+    @Value("${path.file-upload}")
+    private URI path;
 
     private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
 

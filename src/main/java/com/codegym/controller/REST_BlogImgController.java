@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.validation.constraints.Max;
 import java.util.List;
 
 
@@ -40,10 +38,23 @@ public class REST_BlogImgController {
         return new ResponseEntity<Long>(blogImg.getId(), HttpStatus.OK);
     }
 
-    @GetMapping("api/blogImgs")
-    public ResponseEntity<List<BlogImg>> getBlogImgs(){
+    @GetMapping("/api/blogImgs")
+    public ResponseEntity<List<BlogImg>> getAllBlogImgByUser() {
         List<BlogImg> blogImgList = blogImgService.getAllBlogImgByUser(getUserFromToken());
-        return new ResponseEntity<List<BlogImg>> (blogImgList , HttpStatus.OK);
+        if (blogImgList.isEmpty()) {
+            return new ResponseEntity<List<BlogImg>>(blogImgList, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<BlogImg>>(blogImgList, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/api/blogImgs/{id}")
+    public ResponseEntity<BlogImg> getBlogImgById(@PathVariable("id") Long id) {
+        BlogImg blogImg = blogImgService.findById(id);
+        if (blogImg == null) {
+            return new ResponseEntity<BlogImg>(blogImg, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<BlogImg>(blogImg, HttpStatus.OK);
     }
 
     private User getUserFromToken() {
