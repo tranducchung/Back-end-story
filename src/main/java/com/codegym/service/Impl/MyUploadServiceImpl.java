@@ -25,7 +25,9 @@ public class MyUploadServiceImpl implements MyUpLoadService {
 //    @Value("/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir/")
 //    private URI path;
 
+
     private final Path rootLocation = Paths.get("/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir/");
+
 
     @Autowired
     private MyUploadRepository myUploadRepository;

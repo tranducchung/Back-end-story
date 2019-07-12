@@ -60,7 +60,23 @@ public class REST_BlogImgController {
         return new ResponseEntity<BlogImg>(blogImg, HttpStatus.OK);
     }
 
+    //get custom album img
 
+    @GetMapping("/api/blogImgs/{idBlog}/user/{userId}")
+    public ResponseEntity<BlogImg> getCustomAlbumByCustomUserID(@PathVariable("idBlog") Long idBlog,
+                                                                @PathVariable("userId") Long userId) {
+        if (idBlog != null || userId != null) {
+            User user = userService.findUserByID(userId);
+            BlogImg blogImg = blogImgService.findByIdAndUser(idBlog, user);
+            if ( blogImg == null) {
+                return new ResponseEntity<BlogImg>(blogImg, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<BlogImg>(blogImg, HttpStatus.OK);
+        }
+        return new ResponseEntity<BlogImg>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/")
     private User getUserFromToken() {
         Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id_user = ((UserPrinciple) authen).getId();
