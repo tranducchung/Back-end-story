@@ -10,11 +10,21 @@ public class Notification {
     private Long id;
     private String content;
     private String userShare;
+    private Long idUser;
+    private Long idBlog;
     @ManyToOne
     @JoinColumn(name = "id_userReceive")
     private User userReceive;
 
     public Notification() {
+    }
+
+    public Notification(String content, String userShare, Long idUser, Long idBlog, User userReceive) {
+        this.content = content;
+        this.userShare = userShare;
+        this.idUser = idUser;
+        this.idBlog = idBlog;
+        this.userReceive = userReceive;
     }
 
     public Notification(String content, String userShare, User userReceive) {
@@ -53,5 +63,21 @@ public class Notification {
 
     public void setUserReceive(User userReceive) {
         this.userReceive = userReceive;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    public Long getIdBlog() {
+        return idBlog;
+    }
+
+    public void setIdBlog(Long idBlog) {
+        this.idBlog = idBlog;
     }
 }

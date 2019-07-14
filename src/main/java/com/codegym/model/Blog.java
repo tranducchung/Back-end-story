@@ -1,12 +1,15 @@
 package com.codegym.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.Optional;
+
+import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "blog")
 public class Blog {
     @Id
@@ -14,34 +17,65 @@ public class Blog {
     private Long id;
     private String content;
     private String title;
+    private String urlVideo;
     private String createDate;
+    private String hashTags;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany
+    @JoinTable(name = "blog_tag",
+            joinColumns = @JoinColumn(name = "blog_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tags> tags;
+
+
+    @OneToMany(targetEntity = Comment.class)
+    List<Comment> commentList;
+
     public Blog() {
     }
 
-    public Blog(String content, String title, User user) {
-        this.content = content;
-        this.title = title;
-        this.user = user;
-    }
-
-    public Blog(String content, String title, String createDate, User user) {
-        this.content = content;
-        this.title = title;
-        this.createDate = createDate;
-        this.user = user;
-    }
-
-    public Blog(Long id, String content, String title, String createDate, User user) {
+    //    public Blog(String content, String title, String createDate, User user) {
+//        this.content = content;
+//        this.title = title;
+//        this.createDate = createDate;
+//        this.user = user;
+//    }
+//
+    public Blog(Long id, String content, String title, String createDate, User user, String hashTags) {
         this.id = id;
         this.content = content;
         this.title = title;
         this.createDate = createDate;
         this.user = user;
+        this.hashTags = hashTags;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public String getHashTags() {
+        return hashTags;
+    }
+
+    public void setHashTags(String hashTags) {
+        this.hashTags = hashTags;
+    }
+
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
     }
 
     public String getCreateDate() {
@@ -82,5 +116,13 @@ public class Blog {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getUrlVideo() {
+        return urlVideo;
+    }
+
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
     }
 }

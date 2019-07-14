@@ -1,8 +1,12 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "myUpload")
 public class MyUpload {
     @Id
@@ -11,16 +15,21 @@ public class MyUpload {
     private String srcImg;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "myUpload_id", nullable = false)
+    private BlogImg blogImg;
 
     public MyUpload() {
     }
 
-    public MyUpload(String srcImg, User user) {
-        this.srcImg = srcImg;
-        this.user = user;
+    public BlogImg getBlogImg() {
+        return blogImg;
     }
+
+
+    public MyUpload(String srcImg) {
+        this.srcImg = srcImg;
+    }
+
 
     public Long getId() {
         return id;
@@ -38,11 +47,11 @@ public class MyUpload {
         this.srcImg = srcImg;
     }
 
-    public User getUser() {
-        return user;
-    }
+//    public BlogImg getBlogImg() {
+//        return blogImg;
+//    }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setBlogImg(BlogImg blogImg) {
+        this.blogImg = blogImg;
     }
 }
