@@ -2,14 +2,11 @@ package com.codegym.controller;
 
 import com.codegym.config.MyConstants;
 
-import com.codegym.model.ConfirmationToken;
+import com.codegym.model.*;
 import com.codegym.payload.request.LoginForm;
 import com.codegym.payload.request.SignUpForm;
 import com.codegym.payload.response.JwtResponse;
 import com.codegym.payload.response.ResponseMessage;
-import com.codegym.model.Role;
-import com.codegym.model.RoleName;
-import com.codegym.model.User;
 
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
@@ -28,8 +25,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -69,7 +68,7 @@ public class AuthRestAPI {
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getEmail(), userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getUsername(), userDetails.getEmail(), userDetails.getAuthorities()));
     }
 
     @PostMapping("/signup")
@@ -109,6 +108,7 @@ public class AuthRestAPI {
             }
         });
 
+        user.setProvider(AuthProvider.local);
         user.setRoles(roles);
         user.setActive(0);
         userService.save(user);
@@ -135,6 +135,7 @@ public class AuthRestAPI {
 
         sendEmailService.sendEmail(simpleMailMessage);
         userService.save(user);
+
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }

@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class UserPrinciple implements UserDetails {
+public class UserPrinciple implements UserDetails , OAuth2User {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -26,6 +28,9 @@ public class UserPrinciple implements UserDetails {
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
+
+    private Map<String, Object> attributes;
+
 
     public UserPrinciple(Long id, String name,
                          String username, String email, String password,
@@ -53,12 +58,19 @@ public class UserPrinciple implements UserDetails {
         );
     }
 
+    public static UserPrinciple create(User user, Map<String, Object> attributes) {
+        UserPrinciple userPrincipal = UserPrinciple.build(user);
+        userPrincipal.setAttributes(attributes);
+        return userPrincipal;
+    }
+
+
     public Long getId() {
         return id;
     }
 
     public String getName() {
-        return name;
+        return String.valueOf(id);
     }
 
     public String getEmail() {
@@ -79,6 +91,11 @@ public class UserPrinciple implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     @Override
@@ -109,4 +126,9 @@ public class UserPrinciple implements UserDetails {
         UserPrinciple user = (UserPrinciple) o;
         return Objects.equals(id, user.id);
     }
+
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
+    }
+
 }

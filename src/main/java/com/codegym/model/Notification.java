@@ -19,6 +19,14 @@ public class Notification {
     public Notification() {
     }
 
+    public Notification(String content, String userShare, Long idUser, Long idBlog, User userReceive) {
+        this.content = content;
+        this.userShare = userShare;
+        this.idUser = idUser;
+        this.idBlog = idBlog;
+        this.userReceive = userReceive;
+    }
+
     public Notification(String content, String userShare, User userReceive) {
         this.content = content;
         this.userShare = userShare;

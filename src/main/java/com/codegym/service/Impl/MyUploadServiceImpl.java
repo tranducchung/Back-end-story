@@ -1,5 +1,6 @@
 package com.codegym.service.Impl;
 
+import com.codegym.model.BlogImg;
 import com.codegym.model.MyUpload;
 import com.codegym.repository.MyUploadRepository;
 import com.codegym.service.MyUpLoadService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
@@ -15,13 +17,13 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
+@Transactional
 public class MyUploadServiceImpl implements MyUpLoadService {
 
 
-    @Value("${path.file-upload}")
-    private URI path;
 
     private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
@@ -73,5 +75,15 @@ public class MyUploadServiceImpl implements MyUpLoadService {
     @Override
     public void deleteUpload(MyUpload myUpload) {
         myUploadRepository.delete(myUpload);
+    }
+
+    @Override
+    public List<MyUpload> findByBlogImg(BlogImg blogImg) {
+        return myUploadRepository.findAllByBlogImg(blogImg);
+    }
+
+    @Override
+    public void deleteAllByBlogImg(Long id) {
+        myUploadRepository.deleteAllByBlogImgId(id);
     }
 }

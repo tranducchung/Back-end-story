@@ -1,10 +1,12 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,10 +29,6 @@ public class User{
     @Size(min=3, max = 50)
     private String name;
 
-    @NotBlank
-    @Size(min=3, max = 50)
-    private String username;
-
     @NaturalId
     @NotBlank
     @Size(max = 50)
@@ -38,8 +36,16 @@ public class User{
     private String email;
 
     @NotBlank
+    @Size(min=3, max = 50)
+    private String username;
+
+    @JsonIgnore
+    @NotBlank
     @Size(min=6, max = 100)
     private String password;
+
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -48,6 +54,12 @@ public class User{
     private Set<Role> roles = new HashSet<>();
 
     private int active;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
 
     public User() {}
 
@@ -120,5 +132,29 @@ public class User{
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }

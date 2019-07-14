@@ -2,6 +2,7 @@ package com.codegym.security.service;
 
 import com.codegym.model.User;
 import com.codegym.repository.UserRepository;
+import com.codegym.security.oauth2.exception.ResourceNotFoundException;
 import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userRepository.findByEmail(username).orElseThrow(
                 () -> new UsernameNotFoundException("User Not Found with -> username or email : " + username));
+
+        if(user != null  &&  user.getActive() == 1) {
+            return UserPrinciple.build(user);
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
+    public UserDetails loadUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User", "id", id)
+        );
 
         if(user != null  &&  user.getActive() == 1) {
             return UserPrinciple.build(user);

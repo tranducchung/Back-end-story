@@ -1,8 +1,11 @@
 package com.codegym.service;
 
+import com.codegym.model.BlogImg;
 import com.codegym.model.MyUpload;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MyUpLoadService {
     void save(MyUpload myUpload);
@@ -14,4 +17,8 @@ public interface MyUpLoadService {
     MyUpload findMyUploadById(Long id);
 
     void deleteUpload(MyUpload myUpload);
+
+    List<MyUpload> findByBlogImg(BlogImg blogImg);
+
+    void deleteAllByBlogImg(Long id);
 }

@@ -10,7 +10,7 @@ public interface UserService {
     Optional<User> findByEmail(String email);
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
-    void save(User user);
+    User save(User user);
     User findUserByID(Long id);
 
     List<User> findAllUser();

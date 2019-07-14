@@ -19,6 +19,12 @@ public class JwtResponse {
         this.authorities = authorities;
     }
 
+    public JwtResponse(String token) {
+        this.token = token;
+    }
+
+
+
     public String getToken() {
         return token;
     }

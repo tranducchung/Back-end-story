@@ -1,23 +1,31 @@
 package com.codegym.security.jwt;
 
+import com.codegym.config.AppProperties;
 import com.codegym.security.service.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
-public class    JwtProvider {
+public class JwtProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    private AppProperties appProperties;
 
 
-    private String jwtSecret="NguyenAnh";
+    public JwtProvider(AppProperties appProperties) {
+        this.appProperties = appProperties;
+    }
 
+//    @Value("${app.auth.tokenSecret}")
+//    private String jwtSecret ;
+//    @Value("${app.auth.tokenExpirationMsec}")
+//    private int jwtExpiration ;
 
-    private int jwtExpiration =10000;
 
     public String generateJwtToken(Authentication authentication) {
 
@@ -26,14 +34,14 @@ public class    JwtProvider {
         return Jwts.builder()
                 .setSubject((userPrincipal.getEmail()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date((new Date()).getTime() + appProperties.getAuth().getTokenExpirationMsec()))
+                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature -> Message: {} ", e);
@@ -51,12 +59,14 @@ public class    JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
+        Claims claims = Jwts.parser()
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
                 .parseClaimsJws(token)
-                .getBody().getSubject();
-    }
+                .getBody();
 
+        return String.format(claims.getSubject());
+
+    }
 }
 
 

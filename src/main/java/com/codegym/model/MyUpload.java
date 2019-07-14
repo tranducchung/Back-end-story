@@ -1,8 +1,12 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "myUpload")
 public class MyUpload {
     @Id
@@ -17,9 +21,9 @@ public class MyUpload {
     public MyUpload() {
     }
 
-//    public BlogImg getBlogImg() {
-//        return blogImg;
-//    }
+    public BlogImg getBlogImg() {
+        return blogImg;
+    }
 
     public void setBlogImg(BlogImg blogImg) {
         this.blogImg = blogImg;
