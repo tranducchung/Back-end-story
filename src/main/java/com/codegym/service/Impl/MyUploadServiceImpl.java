@@ -23,8 +23,8 @@ import java.util.List;
 @Transactional
 public class MyUploadServiceImpl implements MyUpLoadService {
 
-//    @Value("/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir/")
-//    private URI path;
+    @Value("/home/chung/Documents/DUAN/Back-end-story/src/main/resources/upload-dir/")
+    private URI path;
 
     private final Path rootLocation = Paths.get("/home/nguyenanh/Desktop/Back-end-story/src/main/resources/upload-dir/");
 
