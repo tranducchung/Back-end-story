@@ -27,11 +27,8 @@ public class Notification {
         this.userReceive = userReceive;
     }
 
-    public Notification(String content, String userShare, User userReceive) {
-        this.content = content;
-        this.userShare = userShare;
-        this.userReceive = userReceive;
-    }
+
+
 
     public String getContent() {
         return content;

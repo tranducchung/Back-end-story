@@ -22,8 +22,8 @@ public class Comment {
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
-    @OneToMany(targetEntity = Reply.class)
-    List<Reply> replyList;
+    @OneToMany(mappedBy = "repComment")
+    private List<Reply> replyList;
 
 
     public Comment() {

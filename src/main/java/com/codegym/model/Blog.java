@@ -32,7 +32,7 @@ public class Blog {
     private List<Tags> tags;
 
 
-    @OneToMany(targetEntity = Comment.class)
+    @OneToMany(mappedBy = "blog")
     List<Comment> commentList;
 
     public Blog() {

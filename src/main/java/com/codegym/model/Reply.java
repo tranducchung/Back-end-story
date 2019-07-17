@@ -10,9 +10,10 @@ public class Reply {
     private Long id;
     private String content;
 
-//    @ManyToOne
-//    @JoinColumn(name = "comment_id")
-//    private Comment repComment;
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment repComment;
+
     @ManyToOne
     @JoinColumn(name = "userRep_id")
     private User userReply;
@@ -40,13 +41,13 @@ public class Reply {
         this.content = content;
     }
 
-//    public Comment getRepComment() {
-//        return repComment;
-//    }
-//
-//    public void setRepComment(Comment repComment) {
-//        this.repComment = repComment;
-//    }
+    public Comment getRepComment() {
+        return repComment;
+    }
+
+    public void setRepComment(Comment repComment) {
+        this.repComment = repComment;
+    }
 
     public User getUserReply() {
         return userReply;

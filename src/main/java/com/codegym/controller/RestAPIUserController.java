@@ -58,21 +58,15 @@ public class RestAPIUserController {
 
 
     @GetMapping("/api/users/shareToUser/{userId}/blogs/{blogId}")
-    public ResponseEntity<Void> shareBlogToUser(@PathVariable("userId") Long userId, @PathVariable("blogId") Long blogId) {
-
-        Object authen = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userShare = ((UserPrinciple) authen).getUsername();
-        Long idUserShare = ((UserPrinciple) authen).getId();
+    public ResponseEntity<Void> shareBlogToUser(@PathVariable("userId") Long userId,
+                                                @PathVariable("blogId") Long blogId) {
+        User userShare = getUserFromToken();
+        Long idUserShare = userShare.getId();
         Blog blog = blogService.findById(blogId);
         User userReceive = userService.findUserByID(userId);
         if (userReceive != null && blog != null) {
-            Notification notification = new Notification();
-            notification.setUserShare(userShare);
-            notification.setUserReceive(userReceive);
-            String contentNotification = idUserShare + "/blog/" + blogId;
-            notification.setContent(contentNotification);
-            notification.setIdBlog(blogId);
-            notification.setIdUser(idUserShare);
+            String content = idUserShare + "/blog/" + blogId;
+            Notification notification = new Notification(content, userShare.getUsername(), idUserShare, blogId, userReceive);
             notificationService.save(notification);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
@@ -128,18 +122,18 @@ public class RestAPIUserController {
     @GetMapping(value = "/api/users/shareToUser/{userId}/blogImg/{blogImgID}")
     public ResponseEntity<Void> shareBlogImgBySystem(@PathVariable("userId") Long userId,
                                                      @PathVariable("blogImgID") Long blogImgID) {
-        if (userId != null || blogImgID != null) {
-            User userShare = getUserFromToken();
-            Long idUserShare = userShare.getId();
-            User userReceive = userService.findUserByID(userId);
-            BlogImg blogImg = blogImgService.findById(blogImgID);
-            if (blogImg != null) {
-                String content =   userId + "/blogImg/" + blogImgID;
-                Notification notification = new Notification(content, userShare.getUsername(), idUserShare, blogImgID, userReceive);
-                notificationService.save(notification);
-                return new ResponseEntity<Void>(HttpStatus.OK);
-            }
+
+        User userShare = getUserFromToken();
+        Long idUserShare = userShare.getId();
+        User userReceive = userService.findUserByID(userId);
+        BlogImg blogImg = blogImgService.findById(blogImgID);
+        if (blogImg != null && blogImg != null) {
+            String content = idUserShare + "/blogImg/" + blogImgID;
+            Notification notification = new Notification(content, userShare.getUsername(), idUserShare, blogImgID, userReceive);
+            notificationService.save(notification);
+            return new ResponseEntity<Void>(HttpStatus.OK);
         }
+
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 

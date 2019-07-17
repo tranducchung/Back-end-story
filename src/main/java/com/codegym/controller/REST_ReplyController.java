@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin
 public class REST_ReplyController {
     @Autowired
     private ReplyService replyService;
@@ -35,7 +35,7 @@ public class REST_ReplyController {
         Comment comment = commentService.findCommentById(idComment);
         if (comment != null) {
             reply.setUserReply(getUserFromToken());
-            //reply.setRepComment(comment);
+            reply.setRepComment(comment);
             replyList.add(reply);
             comment.setReplyList(replyList);
             replyService.save(reply);
