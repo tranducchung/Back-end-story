@@ -3,12 +3,19 @@ package com.codegym.service;
 import com.codegym.model.Blog;
 import com.codegym.model.Tags;
 import com.codegym.model.User;
+import com.codegym.payload.response.PagedResponse;
+import com.sun.security.auth.UserPrincipal;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface BlogService {
     List<Blog> findAll();
+
     Blog findById(Long id);
+
     void save(Blog blog);
+
     void remote(Blog blog);
 
     List<Blog> findAllBlogByIdOderById();
@@ -23,4 +30,5 @@ public interface BlogService {
 
     List<Blog> findByTags(Tags tags);
 
+    PagedResponse<Blog> getBlogsByUserId(Long userId, int page, int size);
 }

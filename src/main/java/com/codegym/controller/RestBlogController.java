@@ -3,11 +3,13 @@ package com.codegym.controller;
 import com.codegym.model.Blog;
 import com.codegym.model.Tags;
 import com.codegym.model.User;
+import com.codegym.payload.response.PagedResponse;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.service.UserPrinciple;
 import com.codegym.service.BlogService;
 import com.codegym.service.TagService;
 import com.codegym.service.UserService;
+import com.codegym.until.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -119,7 +121,6 @@ public class RestBlogController {
 
     //get all blog in database by id and DESC
 
-
     @RequestMapping(value = {"/api/blogs-getall"}, method = RequestMethod.GET)
     public ResponseEntity<List<Blog>> getAllBlogSortedByIdDESC() {
         List<Blog> listBlog = blogService.findAllBlogByIdOderById();
@@ -190,6 +191,13 @@ public class RestBlogController {
         return new ResponseEntity<List<Blog>>(blogList, HttpStatus.OK);
     }
 
+    @GetMapping("/api/blogs/users/{userId}")
+    public ResponseEntity<?> getNotesOfUser(@PathVariable("userId") Long userId,
+                                            @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                            @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        PagedResponse<Blog> blogs = blogService.getBlogsByUserId(userId, page, size);
+        return new ResponseEntity<PagedResponse<Blog>>(blogs, HttpStatus.OK);
+    }
 
     private String[] convertStringToArray(String hashtag) {
         return hashtag.split("#");

@@ -3,6 +3,8 @@ package com.codegym.repository;
 import com.codegym.model.Blog;
 import com.codegym.model.Tags;
 import com.codegym.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,4 +29,6 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     List<Blog> findAllByTags(Tags tags);
 
+
+    Page<Blog> findByUserId(Long id , Pageable pageable);
 }
